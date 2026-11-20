@@ -136,17 +136,18 @@ export default function HomeSearchBar({ variant = 'contrast', onSuggestionsChang
         <div className="relative">
           <div className={`
             relative flex items-stretch
-            bg-ink-2 border transition-colors duration-150
-            ${isFocused ? 'border-screen' : 'border-rule-strong'}
+            bg-white rounded-md overflow-hidden shadow-lg shadow-blue-950/25
+            border-2 transition-colors duration-150
+            ${isFocused ? 'border-white' : 'border-transparent'}
           `}>
             <div className="flex items-center justify-center w-11 sm:w-12 flex-shrink-0" aria-hidden="true">
-              <Search className={`w-5 h-5 ${loading ? 'text-rouge' : 'text-faint'}`} />
+              <Search className={`w-5 h-5 ${loading ? 'text-brand' : 'text-gray-500'}`} />
             </div>
 
             <input
               type="text"
               placeholder={t.search.homePlaceholder}
-              className="flex-1 min-w-0 h-13 sm:h-14 pr-2 text-base bg-transparent text-screen placeholder:text-faint outline-none focus-visible:outline-none"
+              className="flex-1 min-w-0 h-13 sm:h-14 pr-2 text-base bg-transparent text-gray-900 placeholder:text-gray-500 outline-none focus-visible:outline-none"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => {
@@ -161,7 +162,7 @@ export default function HomeSearchBar({ variant = 'contrast', onSuggestionsChang
             <button
               type="submit"
               disabled={!searchQuery.trim()}
-              className="flex items-center justify-center w-13 sm:w-14 flex-shrink-0 bg-rouge text-ink hover:bg-screen transition-colors disabled:bg-ink-3 disabled:text-faint disabled:cursor-not-allowed"
+              className="flex items-center justify-center w-13 sm:w-16 flex-shrink-0 bg-ink text-white hover:bg-ink-2 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
               aria-label={t.actions.search}
             >
               <ArrowRight className="w-5 h-5" />
@@ -170,15 +171,15 @@ export default function HomeSearchBar({ variant = 'contrast', onSuggestionsChang
 
           {/* Suggestions dropdown */}
           {showSuggestions && suggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1 z-[100] bg-ink-2 border border-rule-strong">
-              <div className="max-h-96 overflow-y-auto divide-y divide-rule">
+            <div className="absolute top-full left-0 right-0 mt-2 z-[100] bg-white text-gray-900 rounded-md overflow-hidden border border-gray-200 shadow-xl shadow-blue-950/20">
+              <div className="max-h-96 overflow-y-auto divide-y divide-gray-100">
                 {suggestions.map((item) => (
                   <button
                     key={`${getMediaType(item)}-${item.id}`}
                     onClick={() => handleSuggestionClick(item)}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-screen hover:bg-ink-3 transition-colors"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-gray-900 hover:bg-blue-50 transition-colors"
                   >
-                    <div className={`flex-shrink-0 overflow-hidden bg-ink-3 ${isPerson(item) ? 'w-10 h-10' : 'w-10 h-[60px]'}`}>
+                    <div className={`flex-shrink-0 overflow-hidden rounded-sm bg-gray-200 ${isPerson(item) ? 'w-10 h-10' : 'w-10 h-[60px]'}`}>
                       {isPerson(item) ? (
                         item.profile_path ? (
                           <img
@@ -188,7 +189,7 @@ export default function HomeSearchBar({ variant = 'contrast', onSuggestionsChang
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <User className="w-5 h-5 text-faint" aria-hidden="true" />
+                            <User className="w-5 h-5 text-gray-400" aria-hidden="true" />
                           </div>
                         )
                       ) : item.poster_path ? (
@@ -200,9 +201,9 @@ export default function HomeSearchBar({ variant = 'contrast', onSuggestionsChang
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
                           {getMediaType(item) === 'movie' ? (
-                            <Film className="w-5 h-5 text-faint" aria-hidden="true" />
+                            <Film className="w-5 h-5 text-gray-400" aria-hidden="true" />
                           ) : (
-                            <Tv className="w-5 h-5 text-faint" aria-hidden="true" />
+                            <Tv className="w-5 h-5 text-gray-400" aria-hidden="true" />
                           )}
                         </div>
                       )}
@@ -210,14 +211,14 @@ export default function HomeSearchBar({ variant = 'contrast', onSuggestionsChang
 
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-sm truncate">{getTitle(item)}</h3>
-                      <p className="text-xs text-faint truncate tabular">
-                        <span className={isPerson(item) ? 'text-dim' : 'text-rouge'}>{typeLabel(item)}</span>
+                      <p className="text-xs text-gray-600 truncate tabular">
+                        <span className={`mr-3 ${isPerson(item) ? 'text-gray-700 font-semibold' : 'text-brand font-semibold'}`}>{typeLabel(item)}</span>
                         {isPerson(item) ? (
-                          item.known_for_department && <> · {item.known_for_department}</>
+                          item.known_for_department && <span>{item.known_for_department}</span>
                         ) : (
                           <>
-                            {getReleaseDate(item) && <> · {formatDate(getReleaseDate(item))}</>}
-                            {item.vote_average > 0 && <> · {Math.round(item.vote_average * 10) / 10}/10</>}
+                            {getReleaseDate(item) && <span className="mr-3">{formatDate(getReleaseDate(item))}</span>}
+                            {item.vote_average > 0 && <span>{Math.round(item.vote_average * 10) / 10}/10</span>}
                           </>
                         )}
                       </p>
@@ -226,7 +227,7 @@ export default function HomeSearchBar({ variant = 'contrast', onSuggestionsChang
                 ))}
               </div>
 
-              <div className="px-3 py-2 text-xs text-faint border-t border-rule">
+              <div className="px-3 py-2 text-xs text-gray-600 border-t border-gray-100 bg-gray-50">
                 Appuyez sur Entrée pour voir tous les résultats
               </div>
             </div>

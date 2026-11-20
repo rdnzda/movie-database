@@ -73,10 +73,10 @@ export default function PersonPage() {
     return (
       <div className="min-h-screen bg-ink flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="font-display font-extrabold text-4xl text-screen mb-6">{t.errors.loadingError}</h1>
+          <h1 className="font-display font-bold text-4xl text-screen mb-6">{t.errors.loadingError}</h1>
           <button
             onClick={() => router.back()}
-            className="bg-rouge text-ink font-semibold px-6 py-2.5 hover:bg-screen transition-colors"
+            className="rounded-md bg-brand text-white font-semibold px-6 py-2.5 hover:bg-blue-500 transition-colors"
           >
             {t.actions.goBack}
           </button>
@@ -116,7 +116,7 @@ export default function PersonPage() {
         <div className="max-w-[1240px] mx-auto px-4 sm:px-8 pt-6">
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center gap-2 border border-rule-strong text-screen hover:bg-screen hover:text-ink px-3 sm:px-4 py-2 text-sm font-semibold transition-colors mb-8"
+            className="inline-flex items-center gap-2 rounded-md border border-rule-strong text-screen hover:bg-brand hover:text-white hover:border-brand px-3 sm:px-4 py-2 text-sm font-semibold transition-colors mb-8"
             aria-label={t.actions.goBack}
           >
             <FaArrowLeft className="text-xs" aria-hidden="true" />
@@ -124,7 +124,7 @@ export default function PersonPage() {
           </button>
 
           <div className="grid grid-cols-[7.5rem_1fr] sm:grid-cols-[13rem_1fr] lg:grid-cols-[18rem_1fr] gap-4 sm:gap-8 lg:gap-12 items-start">
-            <div className="w-full aspect-[2/3] overflow-hidden bg-ink-3 outline outline-1 -outline-offset-1 outline-white/15">
+            <div className="w-full aspect-[2/3] overflow-hidden rounded-md bg-ink-3 outline outline-1 -outline-offset-1 outline-white/15">
               {profileUrl ? (
                 <img
                   src={profileUrl}
@@ -140,18 +140,18 @@ export default function PersonPage() {
             </div>
 
             <div className="min-w-0">
-              <h1 className="font-display font-extrabold text-[2.1rem] sm:text-5xl lg:text-7xl leading-[0.9] text-screen break-words">
+              <h1 className="font-display font-bold text-[1.75rem] sm:text-4xl lg:text-5xl leading-[1.05] text-screen break-words">
                 {person.name}
               </h1>
               {person.known_for_department && (
-                <p className="mt-3 font-serif italic text-lg sm:text-2xl text-dim">
+                <p className="mt-3 font-medium text-lg sm:text-2xl text-dim">
                   {t.person.knownFor} : {person.known_for_department}
                 </p>
               )}
 
               {person.biography && (
                 <section className="hidden sm:block mt-8">
-                  <h2 className="font-display font-extrabold text-3xl sm:text-4xl leading-none text-screen mb-4">
+                  <h2 className="font-display font-bold text-3xl sm:text-4xl leading-none text-screen mb-4">
                     {t.person.biography}
                   </h2>
                   <p className="text-dim leading-relaxed text-base whitespace-pre-line max-w-[68ch]">
@@ -170,7 +170,7 @@ export default function PersonPage() {
           <div className="sm:hidden mt-8">
             {person.biography ? (
               <section>
-                <h2 className="font-display font-extrabold text-3xl leading-none text-screen mb-3">
+                <h2 className="font-display font-bold text-3xl leading-none text-screen mb-3">
                   {t.person.biography}
                 </h2>
                 <p className="text-dim leading-relaxed text-base whitespace-pre-line line-clamp-[12]">
@@ -183,11 +183,11 @@ export default function PersonPage() {
           </div>
 
           {uniqueCredits.length > 0 && (
-            <section className="mt-14 sm:mt-20 pt-8 border-t border-rule-strong">
-              <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-none text-screen mb-6">
+            <section className="mt-14 sm:mt-20">
+              <h2 className="font-display font-bold text-3xl sm:text-4xl leading-tight text-screen mb-6">
                 {t.person.knownFor}
               </h2>
-              <ol className="border-t border-rule">
+              <ol className="flex flex-col gap-1">
                 {uniqueCredits.slice(0, 24).map((item) => {
                   const mediaType = item.media_type;
                   const mediaId = item.id;
@@ -200,12 +200,12 @@ export default function PersonPage() {
                   const date = getMediaDate(item);
 
                   return (
-                    <li key={`${mediaType}-${mediaId}`} className="border-b border-rule">
+                    <li key={`${mediaType}-${mediaId}`}>
                       <Link
                         href={href}
-                        className="group grid grid-cols-[2.75rem_3.25rem_1fr] sm:grid-cols-[3rem_4.5rem_1fr_7rem] items-center gap-3 sm:gap-5 py-2.5 hover:bg-ink-2 transition-colors"
+                        className="group grid grid-cols-[2.75rem_3.25rem_1fr] sm:grid-cols-[3rem_4.5rem_1fr_7rem] items-center gap-3 sm:gap-5 p-2 rounded-md hover:bg-ink-2 transition-colors"
                       >
-                        <div className="w-11 sm:w-12 aspect-[2/3] overflow-hidden bg-ink-3">
+                        <div className="w-11 sm:w-12 aspect-[2/3] overflow-hidden rounded-sm bg-ink-3">
                           <img
                             src={posterUrl}
                             alt={`Affiche : ${getMediaTitle(item)}`}
@@ -213,11 +213,11 @@ export default function PersonPage() {
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <span className="font-display font-semibold text-xl sm:text-2xl text-faint tabular leading-none">
+                        <span className="font-bold text-base sm:text-lg text-faint tabular leading-none">
                           {date ? formatDate(date) : "—"}
                         </span>
                         <div className="min-w-0">
-                          <h3 className="font-semibold text-screen text-sm sm:text-base leading-snug line-clamp-2 group-hover:underline underline-offset-2 decoration-rouge">
+                          <h3 className="font-semibold text-screen text-sm sm:text-base leading-snug line-clamp-2 group-hover:underline underline-offset-2 decoration-brand-light">
                             {getMediaTitle(item)}
                           </h3>
                           {role && (

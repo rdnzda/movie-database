@@ -49,7 +49,7 @@ export default function MediaGallery({
     <div className="flex flex-col items-start gap-6 pb-14 w-full">
       {/* Titre */}
       {title && (
-        <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-none">{title}</h2>
+        <h2 className="font-display font-bold text-3xl sm:text-4xl leading-tight">{title}</h2>
       )}
 
       {/* Grille de cartes responsive */}
@@ -66,7 +66,7 @@ export default function MediaGallery({
       {/* Bouton "Charger plus" */}
       {canLoadMore && (
         <button
-          className="px-7 py-3 cursor-pointer border border-rule-strong text-screen font-semibold hover:bg-screen hover:text-ink hover:border-screen mx-auto flex items-center gap-2 disabled:opacity-60 disabled:cursor-wait transition-colors duration-150 text-sm"
+          className="px-7 py-3 cursor-pointer rounded-md border border-rule-strong text-screen font-semibold hover:bg-brand hover:text-white hover:border-brand mx-auto flex items-center gap-2 disabled:opacity-60 disabled:cursor-wait transition-colors duration-150 text-sm"
           onClick={onLoadMore}
           disabled={loadingMore}
           aria-label={loadingMore ? t.loading.more : t.actions.loadMore}
@@ -78,7 +78,7 @@ export default function MediaGallery({
 
       {/* Message d'erreur */}
       {error && (
-        <div className="text-rouge border border-rouge/50 px-4 py-3 m-auto text-sm">
+        <div className="text-brand-light border border-brand-light/50 px-4 py-3 m-auto text-sm">
           {error}
         </div>
       )}

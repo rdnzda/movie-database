@@ -1,24 +1,16 @@
-import { Big_Shoulders_Display, Instrument_Sans, Instrument_Serif } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import 'simplebar-react/dist/simplebar.min.css';
 import "./globals.css";
 import { LanguageProvider } from "../contexts/LanguageContext";
 
-const display = Big_Shoulders_Display({
-  variable: "--font-display-face",
-  subsets: ["latin"],
-  weight: ["600", "800"],
-});
-
-const body = Instrument_Sans({
-  variable: "--font-body",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const serif = Instrument_Serif({
-  variable: "--font-serif-face",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
 });
 
 export const metadata = {
@@ -31,12 +23,12 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#110f0e",
+  themeColor: "#111827",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fr" className={`${display.variable} ${body.variable} ${serif.variable}`}>
+    <html lang="fr" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased bg-ink text-screen font-sans">
         <LanguageProvider>
           {children}

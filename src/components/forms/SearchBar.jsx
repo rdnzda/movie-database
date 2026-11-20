@@ -27,13 +27,13 @@ export default function SearchBar({ onSearch }) {
   }, [searchQuery, onSearch]);
 
   return (
-    <div className="fixed top-16 sm:top-[76px] flex flex-col items-center w-full bg-ink-2 border-b border-rule z-50">
+    <div className="fixed top-16 sm:top-[76px] flex flex-col items-center w-full bg-white border-b border-gray-200 z-50">
       <form onSubmit={(e) => e.preventDefault()} className="flex flex-row w-full max-w-[1240px] px-4 sm:px-8 items-center" role="search">
-        <Search className="w-4 h-4 text-faint flex-shrink-0" aria-hidden="true" />
+        <Search className="w-5 h-5 text-gray-700 flex-shrink-0" aria-hidden="true" />
         <input
           type="text"
           placeholder={t.search.placeholder}
-          className="h-[52px] pl-3 outline-none focus-visible:outline-none text-screen placeholder:text-faint placeholder:font-serif placeholder:italic placeholder:text-lg w-full text-base bg-transparent"
+          className="h-[52px] pl-3 outline-none focus-visible:outline-none text-gray-900 placeholder:text-gray-500 placeholder:italic w-full text-base bg-transparent"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           aria-label="Rechercher des films et séries"

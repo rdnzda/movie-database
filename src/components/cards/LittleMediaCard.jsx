@@ -24,7 +24,7 @@ export default function LittleMediaCard({ media, mediaType = "movie", rank }) {
       href={`/${mediaType}/${media.id}`}
       className="group flex-none w-[140px] sm:w-[164px] flex flex-col"
     >
-      <div className="relative w-full aspect-[2/3] overflow-hidden bg-ink-3 outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color] duration-150">
+      <div className="relative w-full aspect-[2/3] overflow-hidden rounded-md bg-gray-200 ring-1 ring-black/5 group-hover:ring-2 group-hover:ring-brand transition-shadow duration-150">
         <img
           alt={`Affiche : ${title}`}
           src={posterUrl}
@@ -35,15 +35,15 @@ export default function LittleMediaCard({ media, mediaType = "movie", rank }) {
 
       <div className="flex gap-2.5 pt-2.5 w-full">
         {rank != null && (
-          <span className="font-display font-extrabold text-[1.6rem] leading-[0.9] text-rouge tabular flex-shrink-0" aria-hidden="true">
+          <span className="font-display font-bold text-2xl leading-none text-brand tabular flex-shrink-0" aria-hidden="true">
             {String(rank).padStart(2, "0")}
           </span>
         )}
         <div className="min-w-0">
-          <h3 className="text-sm font-semibold leading-snug text-screen line-clamp-2 group-hover:underline underline-offset-2 decoration-rouge">
+          <h3 className="text-sm font-bold leading-snug text-gray-900 line-clamp-2 group-hover:text-brand">
             {title}
           </h3>
-          {releaseDate && <p className="text-xs text-faint tabular mt-0.5">{formatDateEnglish(releaseDate)}</p>}
+          {releaseDate && <p className="text-xs text-gray-600 tabular mt-0.5">{formatDateEnglish(releaseDate)}</p>}
         </div>
       </div>
     </Link>

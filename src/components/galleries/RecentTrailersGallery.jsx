@@ -16,7 +16,7 @@ function TrailerCard({ item, onOpen }) {
       onClick={() => onOpen(item)}
       className="flex flex-col gap-2.5 w-[280px] sm:w-[340px] md:w-[380px] flex-none group text-left"
     >
-      <div className="relative overflow-hidden w-full aspect-video bg-black outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color]">
+      <div className="relative overflow-hidden w-full aspect-video bg-black rounded-md outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={thumb}
@@ -29,7 +29,7 @@ function TrailerCard({ item, onOpen }) {
             }
           }}
         />
-        <span className="absolute bottom-0 left-0 inline-flex items-center gap-1.5 bg-ink text-screen text-xs font-semibold pl-2 pr-2.5 py-1.5 group-hover:bg-rouge group-hover:text-ink transition-colors">
+        <span className="absolute bottom-2 left-2 rounded inline-flex items-center gap-1.5 bg-ink text-screen text-xs font-semibold pl-2 pr-2.5 py-1.5 group-hover:bg-brand group-hover:text-white transition-colors">
           <Play className="w-3 h-3 fill-current" aria-hidden="true" />
           {item.video_type || 'Trailer'}
         </span>
@@ -210,10 +210,10 @@ export default function RecentTrailersGallery({ include = 'both' }) {
   }, [active]);
 
   return (
-    <section className="w-full flex flex-col gap-6 text-screen pt-10 sm:pt-12 pb-10 bg-ink-2 border-t border-rule">
+    <section className="w-full flex flex-col gap-6 text-screen pt-10 sm:pt-12 pb-12 bg-ink">
       <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8">
         <div className="flex flex-col lg:flex-row lg:items-end gap-4 lg:gap-10">
-          <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-none">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl leading-none">
             {t?.sections?.recentTrailers || 'Nouveaux Trailers'}
           </h2>
           <div className="flex gap-x-5 gap-y-1 flex-wrap -mb-1" role="group">
@@ -225,7 +225,7 @@ export default function RecentTrailersGallery({ include = 'both' }) {
                   key={f.key}
                   onClick={() => setFilter(f.key)}
                   aria-pressed={isActive}
-                  className={`py-1 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${isActive ? 'border-rouge text-screen' : 'border-transparent text-dim hover:text-screen hover:border-rule-strong'}`}
+                  className={`py-1 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${isActive ? 'border-brand-light text-screen' : 'border-transparent text-dim hover:text-screen hover:border-rule-strong'}`}
                 >
                   {label}
                 </button>
@@ -239,13 +239,13 @@ export default function RecentTrailersGallery({ include = 'both' }) {
           <div className="relative overflow-hidden">
             <div className="flex gap-5">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="flex-1 min-w-[260px] aspect-video bg-ink-3 animate-pulse" />
+                <div key={i} className="flex-1 min-w-[260px] aspect-video rounded-md bg-ink-3 animate-pulse" />
               ))}
             </div>
           </div>
         </div>
       )}
-      {error && <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8 text-sm text-rouge">{error}</div>}
+      {error && <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8 text-sm text-brand-light">{error}</div>}
       {!loading && !error && (
         <SimpleBarCarousel trailers={trailers} onOpen={setActive} />
       )}
@@ -258,7 +258,7 @@ export default function RecentTrailersGallery({ include = 'both' }) {
           <div className="relative w-full max-w-6xl aspect-video bg-black border border-rule" role="dialog" aria-modal="true" aria-label={active.title}>
             <button
               onClick={() => setActive(null)}
-              className="absolute -top-11 right-0 flex items-center justify-center w-10 h-10 text-screen hover:text-rouge"
+              className="absolute -top-11 right-0 flex items-center justify-center w-10 h-10 text-screen hover:text-brand-light"
               aria-label="Fermer"
             ><X className="w-6 h-6" aria-hidden="true" /></button>
             <iframe

@@ -98,7 +98,7 @@ export default function TopSeries() {
       <main className="pt-16 sm:pt-[76px] w-full flex-1">
         <SearchBar onSearch={handleSearch} />
         <div className="pt-[52px] max-w-[1240px] mx-auto w-full px-4 sm:px-8">
-          <h1 className="font-display font-extrabold text-5xl sm:text-6xl lg:text-7xl leading-[0.9] pt-10 sm:pt-12 pb-6">
+          <h1 className="font-display font-bold text-4xl sm:text-5xl leading-[1.05] pt-10 sm:pt-12 pb-6">
             {t.pages.topRatedSeries}
           </h1>
           <FilterBar onChange={setFilters} initial={{ sort_by: 'vote_average.desc' }} />

@@ -13,19 +13,18 @@ export default function MediaDiscover() {
     };
 
     return (
-        <section className="relative w-full border-b border-rule">
-            <div className="relative mx-auto w-full max-w-[1240px] px-4 sm:px-8 pt-10 sm:pt-14 lg:pt-16 grid gap-6 lg:gap-12 lg:grid-cols-[1.15fr_1fr] lg:items-end">
-                <header className="lg:pb-12">
-                    <h1 className="font-display font-extrabold text-[3.75rem] sm:text-[5.5rem] lg:text-[7rem] leading-[0.85] text-screen">
+        <section className="relative w-full bg-brand bg-gradient-to-r from-blue-600 to-blue-700 [&_:focus-visible]:outline-white">
+            <div className="relative mx-auto w-full max-w-[1240px] px-4 sm:px-8 pt-7 sm:pt-9 flex flex-col gap-4 sm:gap-5">
+                <header className="flex flex-col md:flex-row md:items-baseline md:gap-4">
+                    <h1 className="font-display font-bold text-3xl sm:text-4xl leading-tight text-white">
                         {t.home.welcome}
                     </h1>
-                    <h2 className="mt-4 max-w-xl font-serif italic text-xl sm:text-2xl lg:text-[1.7rem] leading-snug text-dim">
+                    <h2 className="mt-1 md:mt-0 text-base sm:text-xl font-semibold leading-snug text-blue-50 max-w-[60ch]">
                         {t.home.subtitle}
                     </h2>
                 </header>
                 <div className={`
-                    transition-[padding] duration-300 ease-out
-                    ${showingSuggestions ? 'pb-[455px]' : 'pb-10 sm:pb-12'}
+                    ${showingSuggestions ? 'pb-[455px]' : 'pb-8 sm:pb-10'}
                 `}>
                     <HomeSearchBar variant="light" onSuggestionsChange={handleSuggestionsChange} />
                 </div>

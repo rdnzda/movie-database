@@ -80,7 +80,7 @@ export default function FilterBar({ onChange, initial = {}, compact = false }) {
 
   const labelClass = "flex items-center gap-2 text-sm font-semibold text-dim";
   const fieldClass =
-    "w-full bg-ink border border-rule-strong px-3 py-2.5 text-screen text-sm placeholder:text-faint hover:border-dim focus:border-screen transition-colors";
+    "w-full bg-ink rounded-md border border-rule-strong px-3 py-2.5 text-screen text-sm placeholder:text-faint hover:border-dim focus:border-screen transition-colors";
 
   return (
     <div className="w-full pb-2">
@@ -90,12 +90,12 @@ export default function FilterBar({ onChange, initial = {}, compact = false }) {
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             aria-expanded={isExpanded}
-            className="flex items-center gap-3 border border-rule-strong px-4 py-2.5 text-screen hover:border-screen transition-colors"
+            className="flex items-center gap-3 rounded-md border border-rule-strong px-4 py-2.5 text-screen hover:border-screen transition-colors"
           >
             <FaFilter className="text-faint text-xs" aria-hidden="true" />
             <span className="font-semibold text-sm">Filtres</span>
             {hasActiveFilters && (
-              <span className="w-1.5 h-1.5 bg-rouge" aria-hidden="true"></span>
+              <span className="w-2 h-2 rounded-full bg-brand-light" aria-hidden="true"></span>
             )}
             <FaChevronDown
               className={`text-faint text-xs transition-transform duration-200 ${
@@ -110,17 +110,17 @@ export default function FilterBar({ onChange, initial = {}, compact = false }) {
         <div className={`transition-[max-height,opacity] duration-300 ease-out overflow-hidden ${
           isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 invisible'
         }`}>
-          <div className="bg-ink-2 border border-rule p-4 sm:p-6 mb-4 max-h-[80vh] overflow-y-auto">
+          <div className="bg-ink-2 border border-rule rounded-md p-4 sm:p-6 mb-4 max-h-[80vh] overflow-y-auto">
             {/* Header avec reset */}
             <div className="flex flex-wrap items-center justify-between mb-5 gap-2">
-              <h3 className="font-display font-semibold text-2xl leading-none text-screen">
+              <h3 className="font-display font-bold text-2xl leading-none text-screen">
                 <span className="hidden xs:inline">Personnaliser votre recherche</span>
                 <span className="inline xs:hidden">Recherche</span>
               </h3>
               {hasActiveFilters && (
                 <button
                   onClick={resetFilters}
-                  className="flex items-center gap-1.5 text-rouge hover:text-screen text-sm font-semibold transition-colors"
+                  className="flex items-center gap-1.5 text-brand-light hover:text-screen text-sm font-semibold transition-colors"
                 >
                   <FaTimes className="text-xs" aria-hidden="true" />
                   Réinitialiser
@@ -202,7 +202,7 @@ export default function FilterBar({ onChange, initial = {}, compact = false }) {
                       aria-pressed={active}
                       className={`px-3 py-1.5 text-sm font-semibold border transition-colors duration-150 ${
                         active
-                          ? "bg-screen text-ink border-screen"
+                          ? "bg-brand text-white border-screen"
                           : "text-dim border-rule-strong hover:text-screen hover:border-screen"
                       }`}
                     >

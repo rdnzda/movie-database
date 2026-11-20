@@ -12,7 +12,7 @@ export default function Footer() {
   const { t } = useLanguage();
 
   const linkClass = "text-sm text-dim hover:text-screen transition-colors";
-  const headClass = "font-display font-semibold text-xl text-screen leading-none mb-3";
+  const headClass = "font-bold text-sm text-screen mb-3";
 
   return (
     <footer className="w-full bg-ink border-t border-rule pt-12 pb-10 mt-auto">
@@ -20,7 +20,7 @@ export default function Footer() {
         {/* Logo */}
         <div className="col-span-2 sm:col-span-1">
           <Link href="/" className="inline-block">
-            <span className="font-display font-extrabold text-5xl leading-none text-screen">MDTB</span>
+            <span className="mdtb-logo text-3xl sm:text-4xl leading-none">MDTB</span>
           </Link>
         </div>
 
@@ -52,7 +52,7 @@ export default function Footer() {
       </div>
 
       {/* Crédits */}
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-8 mt-10"><div className="pt-5 border-t border-rule flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-faint">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-8 mt-10"><div className="pt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-faint">
         <p>
           {t.footer.createdBy}
           <span className="mx-2 text-rule-strong" aria-hidden="true">/</span>
@@ -71,7 +71,7 @@ export default function Footer() {
             href="https://www.themoviedb.org/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-screen underline underline-offset-2 decoration-rouge hover:text-rouge transition-colors"
+            className="text-screen underline underline-offset-2 decoration-brand-light hover:text-brand-light transition-colors"
           >
             The Movie Database (TMDB)
           </a>

@@ -9,7 +9,7 @@
 export function Spinner({ size = 32, className = "" }) {
   return (
     <div
-      className={`relative inline-block animate-spin rounded-full border-[3px] border-rule border-t-rouge ${className}`}
+      className={`relative inline-block animate-spin rounded-full border-[3px] border-rule border-t-brand-light ${className}`}
       style={{ width: size, height: size }}
       aria-label="Chargement"
       role="status"
@@ -23,7 +23,7 @@ export function SkeletonGrid({ count = 12 }) {
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 sm:gap-x-5 gap-y-7 w-full" aria-hidden="true">
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="flex flex-col gap-2.5 w-full">
-          <div className="aspect-[2/3] w-full bg-ink-3 animate-pulse" />
+          <div className="aspect-[2/3] w-full rounded-md bg-ink-3 animate-pulse" />
           <div className="h-3.5 w-3/4 bg-ink-3" />
           <div className="h-3 w-1/2 bg-ink-2" />
         </div>
@@ -48,7 +48,7 @@ export default function Loader() {
   return (
     <div className="w-full flex flex-col items-center gap-5 py-16">
       <Spinner size={40} className="border-[3px]" />
-      <p className="font-serif italic text-dim text-lg">Chargement…</p>
+      <p className="font-medium text-dim text-lg">Chargement…</p>
     </div>
   );
 }

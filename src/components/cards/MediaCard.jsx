@@ -51,7 +51,7 @@ export default function MediaCard({ media, mediaType = "movie" }) {
       aria-label={title}
     >
       {/* Poster */}
-      <div className="relative w-full aspect-[2/3] overflow-hidden bg-ink-3 outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color] duration-150">
+      <div className="relative w-full aspect-[2/3] overflow-hidden rounded-md bg-ink-3 outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color] duration-150">
         <img
           alt={`Affiche : ${title}`}
           src={posterUrl}
@@ -68,14 +68,14 @@ export default function MediaCard({ media, mediaType = "movie" }) {
       </div>
 
       {/* Informations */}
-      <div className="pt-2.5 border-b border-rule pb-2.5 flex-1 flex flex-col">
-        <h3 className="text-sm font-semibold leading-snug text-screen line-clamp-2 group-hover:underline underline-offset-2 decoration-rouge">
+      <div className="pt-2.5 flex-1 flex flex-col">
+        <h3 className="text-sm font-semibold leading-snug text-screen line-clamp-2 group-hover:underline underline-offset-2 decoration-brand-light">
           {title}
         </h3>
         <div className="mt-auto pt-1 flex items-center justify-between gap-2 text-xs tabular">
           <span className="text-faint">{formatDateEnglish(releaseDate)}</span>
           <span className="flex items-center gap-1 text-screen font-semibold">
-            <FaStar className="text-rouge text-[0.65rem]" aria-hidden="true" />
+            <FaStar className="text-brand-light text-[0.65rem]" aria-hidden="true" />
             {formatNote(media.vote_average)}
           </span>
         </div>

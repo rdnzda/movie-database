@@ -1,28 +1,30 @@
 @import "tailwindcss";
 
 /*
- * MDTB — direction « programme de cinémathèque »
- * Fond noir chaud (salle éteinte), texte blanc écran, un seul accent rouge
- * (fauteuil / lumière de sortie). Titres en Big Shoulders Display (affiches,
- * génériques), texte courant en Instrument Sans, taglines en Instrument Serif.
+ * MDTB — identité d'origine affinée
+ * Bandeau et en-tête bleu nuit, marque bleue (logo, bandeau d'accueil),
+ * zones de contenu claires sur l'accueil, pages de fiche sur fond nuit.
  */
 @theme {
-  --color-ink: #110f0e;
-  --color-ink-2: #1a1716;
-  --color-ink-3: #24201e;
-  --color-rule: #3b3532;
-  --color-rule-strong: #5a514c;
-  --color-screen: #f1ebe1;
-  --color-dim: #b3a99d;
-  --color-faint: #948a80;
-  --color-rouge: #ef5a5f;
+  /* Nuit (en-tête, pied de page, fiches) */
+  --color-ink: #111827;
+  --color-ink-2: #1f2937;
+  --color-ink-3: #374151;
+  --color-rule: #374151;
+  --color-rule-strong: #4b5563;
+  /* Texte sur fond nuit */
+  --color-screen: #f9fafb;
+  --color-dim: #d1d5db;
+  --color-faint: #9ca3af;
+  /* Marque */
+  --color-brand: #2563eb;
+  --color-brand-light: #60a5fa;
 }
 
-/* Familles fournies par next/font (variables posées sur <html>) */
 @theme inline {
-  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display-face), "Arial Narrow", ui-sans-serif, sans-serif;
-  --font-serif: var(--font-serif-face), Georgia, serif;
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-display: Arial, Helvetica, sans-serif;
+  --font-mono: var(--font-geist-mono);
 }
 
 :root {
@@ -32,25 +34,40 @@
 html {
   background: var(--color-ink);
   scrollbar-width: thin;
-  scrollbar-color: var(--color-rule-strong) transparent;
+  scrollbar-color: var(--color-faint) transparent;
 }
 
 body {
   background: var(--color-ink);
   color: var(--color-screen);
-  font-family: var(--font-sans);
-  text-rendering: optimizeLegibility;
+  font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
 }
 
+/* Titres : resserrés, hiérarchie nette */
+.font-display {
+  letter-spacing: -0.02em;
+}
+
+/* Logo MDTB d'origine */
+.mdtb-logo {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-image: linear-gradient(to right, #60a5fa, #1d4ed8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 ::selection {
-  background: var(--color-rouge);
-  color: var(--color-ink);
+  background: var(--color-brand);
+  color: #fff;
 }
 
 /* Focus visible net et cohérent partout */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--color-rouge);
+  outline: 2px solid var(--color-brand-light);
   outline-offset: 2px;
 }
 
@@ -61,8 +78,8 @@ body {
 
 /* SimpleBar : poignée discrète */
 .simplebar-scrollbar::before {
-  background-color: var(--color-rule-strong);
-  border-radius: 0;
+  background-color: var(--color-faint);
+  border-radius: 4px;
 }
 .simplebar-track.simplebar-horizontal {
   height: 10px;
@@ -80,7 +97,8 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color-rule-strong);
+  background-color: var(--color-faint);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-button {
   display: none;

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useLanguage } from '../../contexts/LanguageContext';
+import { Globe } from "lucide-react";
 
 const languages = [
   { code: 'fr', name: 'Français', short: 'FR' },
@@ -52,13 +53,14 @@ export default function LanguageSwitch() {
         aria-label="Changer de langue"
         aria-expanded={isOpen}
         className="
-          flex items-center gap-1.5 px-2.5 py-1.5
-          border border-rule hover:border-rule-strong
+          flex items-center gap-1.5 px-2.5 py-1.5 rounded-md
+          bg-ink-2 border border-rule hover:border-rule-strong
           text-screen
           transition-colors duration-150
         "
       >
-        <span className="text-sm font-semibold tracking-wide">{currentLanguage.short}</span>
+        <Globe className="w-4 h-4 text-brand-light flex-shrink-0" aria-hidden="true" />
+        <span className="text-sm font-semibold">{currentLanguage.short}</span>
         <svg
           className={`w-3 h-3 text-faint transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           aria-hidden="true"
@@ -80,7 +82,7 @@ export default function LanguageSwitch() {
           <div
             className="
               absolute top-full right-0 mt-2 z-[70]
-              w-44
+              w-44 rounded-md overflow-hidden shadow-lg shadow-black/30
               bg-ink-2 border border-rule
               py-1
             "
@@ -105,13 +107,13 @@ export default function LanguageSwitch() {
               >
                 <span className={`
                   w-6 text-center text-xs font-semibold tabular-nums
-                  ${language === lang.code ? 'text-rouge' : 'text-faint'}
+                  ${language === lang.code ? 'text-brand-light' : 'text-faint'}
                 `}>
                   {lang.short}
                 </span>
                 <span className="flex-1 font-medium">{lang.name}</span>
                 {language === lang.code && (
-                  <svg className="w-4 h-4 text-rouge flex-shrink-0" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 text-brand-light flex-shrink-0" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 )}

@@ -50,18 +50,18 @@ function PeoplePageContent() {
       <NavBar />
       <main className="flex-1 pt-16 sm:pt-[76px] pb-16">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-8">
-          <div className="pt-10 sm:pt-12 pb-8 grid gap-6 lg:grid-cols-[1fr_minmax(0,32rem)] lg:items-end border-b border-rule-strong mb-8">
+          <div className="pt-10 sm:pt-12 pb-8 grid gap-6 lg:grid-cols-[1fr_minmax(0,32rem)] lg:items-end">
             <div>
-              <h1 className="font-display font-extrabold text-5xl sm:text-6xl lg:text-7xl leading-[0.9] text-screen">
+              <h1 className="font-display font-bold text-4xl sm:text-5xl leading-[1.05] text-screen">
                 {t.navigation.distribution}
               </h1>
-              <p className="mt-3 font-serif italic text-dim text-lg sm:text-xl">
+              <p className="mt-3 font-medium text-dim text-lg sm:text-xl">
                 {t.search.searchPeoplePlaceholder}
               </p>
             </div>
 
             <form onSubmit={handleSubmit} role="search">
-              <div className="flex items-stretch bg-ink-2 border border-rule-strong focus-within:border-screen transition-colors">
+              <div className="flex items-stretch bg-ink-2 rounded-md overflow-hidden border border-rule-strong focus-within:border-screen transition-colors">
                 <div className="flex items-center justify-center w-11 text-faint" aria-hidden="true">
                   <Search className="w-5 h-5" />
                 </div>
@@ -76,7 +76,7 @@ function PeoplePageContent() {
                 <button
                   type="submit"
                   disabled={!query.trim()}
-                  className="px-4 sm:px-6 font-semibold bg-rouge text-ink hover:bg-screen disabled:bg-ink-3 disabled:text-faint disabled:cursor-not-allowed text-sm transition-colors"
+                  className="px-4 sm:px-6 font-semibold rounded-md bg-brand text-white hover:bg-blue-500 disabled:bg-ink-3 disabled:text-faint disabled:cursor-not-allowed text-sm transition-colors"
                 >
                   {t.actions.search}
                 </button>
@@ -89,7 +89,10 @@ function PeoplePageContent() {
               <Loader />
             </div>
           ) : results.length === 0 && query.trim() ? (
-            <p className="text-dim py-8 font-serif italic text-xl">{t.search.noResults}</p>
+            <div className="py-8">
+              <p className="text-screen font-semibold text-lg">{t.search.noResults}</p>
+              <p className="text-faint text-sm mt-1">{t.search.searchPeoplePlaceholder}</p>
+            </div>
           ) : results.length === 0 && !query.trim() ? (
             <p className="text-faint text-sm py-8">
               {t.search.searchPeoplePlaceholder}
@@ -102,7 +105,7 @@ function PeoplePageContent() {
                   href={`/person/${person.id}`}
                   className="group flex flex-col"
                 >
-                  <div className="aspect-[2/3] overflow-hidden bg-ink-3 outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color]">
+                  <div className="aspect-[2/3] overflow-hidden rounded-md bg-ink-3 outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color]">
                     {person.profile_path ? (
                       <img
                         src={`https://image.tmdb.org/t/p/w300${person.profile_path}`}
@@ -116,8 +119,8 @@ function PeoplePageContent() {
                       </div>
                     )}
                   </div>
-                  <div className="pt-2.5 pb-2.5 border-b border-rule">
-                    <h2 className="font-semibold text-screen text-sm leading-snug line-clamp-2 group-hover:underline underline-offset-2 decoration-rouge">
+                  <div className="pt-2.5">
+                    <h2 className="font-semibold text-screen text-sm leading-snug line-clamp-2 group-hover:underline underline-offset-2 decoration-brand-light">
                       {person.name}
                     </h2>
                     {person.known_for_department && (

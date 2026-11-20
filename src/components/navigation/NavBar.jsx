@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
+import { FaBars, FaTimes, FaChevronDown, FaUsers } from "react-icons/fa";
 import { useLanguage } from "../../contexts/LanguageContext";
 import LanguageSwitch from "./LanguageSwitch";
 
@@ -19,9 +19,9 @@ const dropdownPanel =
 const dropdownLink =
   "block px-4 py-2.5 text-sm text-dim hover:text-screen hover:bg-ink-3 transition-colors";
 const mobileLink =
-  "flex items-center justify-between w-full py-3 text-lg text-screen hover:text-rouge transition-colors";
+  "flex items-center justify-between w-full py-3 text-lg text-screen hover:text-brand-light transition-colors";
 const mobileSubLink =
-  "block py-2 pl-4 border-l border-rule text-dim hover:text-screen hover:border-rouge transition-colors";
+  "block py-2 pl-4 border-l border-rule text-dim hover:text-screen hover:border-brand-light transition-colors";
 
 export default function NavBar() {
   const { t } = useLanguage();
@@ -48,16 +48,11 @@ export default function NavBar() {
         {/* Logo */}
         <Link
           href="/"
-          className="group flex items-baseline gap-3"
+          className="flex items-center"
           onClick={closeMobileMenu}
           aria-label="MDTB — accueil"
         >
-          <span className="font-display font-extrabold text-[2rem] sm:text-[2.4rem] leading-none text-screen">
-            MDTB
-          </span>
-          <span className="hidden md:inline font-serif italic text-dim text-base leading-none group-hover:text-screen transition-colors">
-            The Movie Database
-          </span>
+          <span className="mdtb-logo text-2xl sm:text-3xl leading-none">MDTB</span>
         </Link>
 
         {/* Menu desktop */}
@@ -70,7 +65,7 @@ export default function NavBar() {
                 <FaChevronDown className="w-2.5 h-2.5" aria-hidden="true" />
               </button>
               <div className={dropdownPanel}>
-                <div className="bg-ink-2 border border-rule min-w-[170px] py-1">
+                <div className="bg-ink-2 border border-rule rounded-md overflow-hidden min-w-[170px] py-1 shadow-lg shadow-black/20">
                   <Link className={dropdownLink} href="/popular">{t.navigation.popular}</Link>
                   <Link className={dropdownLink} href="/top">{t.navigation.topRated}</Link>
                 </div>
@@ -84,7 +79,7 @@ export default function NavBar() {
                 <FaChevronDown className="w-2.5 h-2.5" aria-hidden="true" />
               </button>
               <div className={dropdownPanel}>
-                <div className="bg-ink-2 border border-rule min-w-[170px] py-1">
+                <div className="bg-ink-2 border border-rule rounded-md overflow-hidden min-w-[170px] py-1 shadow-lg shadow-black/20">
                   <Link className={dropdownLink} href="/series/popular">{t.navigation.popular}</Link>
                   <Link className={dropdownLink} href="/series/top">{t.navigation.topRatedFeminine}</Link>
                 </div>
@@ -93,7 +88,8 @@ export default function NavBar() {
 
             {/* Lien Distribution (acteurs, réalisateurs) */}
             <li>
-              <Link className={desktopLink} href="/people">
+              <Link className={`${desktopLink} flex items-center gap-2`} href="/people">
+                <FaUsers className="w-4 h-4" aria-hidden="true" />
                 {t.navigation.distribution}
               </Link>
             </li>
@@ -114,7 +110,7 @@ export default function NavBar() {
         {/* Bouton menu mobile */}
         <button
           onClick={toggleMobileMenu}
-          className="lg:hidden flex items-center justify-center w-11 h-11 -mr-2 text-screen hover:text-rouge transition-colors"
+          className="lg:hidden flex items-center justify-center w-11 h-11 -mr-2 text-screen hover:text-brand-light transition-colors"
           aria-label="Toggle menu"
           aria-expanded={isMobileMenuOpen}
         >
@@ -135,7 +131,7 @@ export default function NavBar() {
         }`}>
           <div className="flex flex-col h-full">
             <div className="px-6 py-4 border-b border-rule flex items-center justify-between">
-              <span className="font-display font-semibold text-2xl text-screen">Menu</span>
+              <span className="font-display font-bold text-lg text-screen">Menu</span>
               <LanguageSwitch />
             </div>
 

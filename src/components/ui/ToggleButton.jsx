@@ -11,11 +11,11 @@ export default function ToggleButton({ selected, onSelect }) {
 
   const base =
     "px-4 py-1.5 text-sm font-semibold whitespace-nowrap transition-colors duration-150";
-  const on = "bg-screen text-ink";
-  const off = "text-dim hover:text-screen";
+  const on = "bg-brand text-white";
+  const off = "text-gray-700 hover:text-gray-900 hover:bg-gray-100";
 
   return (
-    <div className="flex w-fit border border-rule-strong divide-x divide-rule-strong" role="group">
+    <div className="flex w-fit rounded-md overflow-hidden border border-gray-300" role="group">
       <button
         onClick={() => onSelect("day")}
         className={`${base} ${selected === "day" ? on : off}`}

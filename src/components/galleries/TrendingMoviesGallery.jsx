@@ -32,11 +32,10 @@ export default function TrendingMoviesGallery({ timeWindow = "day" }) {
     return (
       <div className="w-full">
         <div className="w-full max-w-[1240px] mx-auto mb-4 px-4 sm:px-8 flex items-center gap-4">
-        <h3 className="font-display font-semibold text-2xl leading-none text-screen">{t.navigation.films}</h3>
-        <span className="flex-1 h-px bg-rule" aria-hidden="true" />
+        <h3 className="font-semibold text-lg leading-none text-gray-700">{t.navigation.films}</h3>
         </div>
         <div className="max-w-[1240px] mx-auto flex items-center justify-center min-h-[260px] px-4 sm:px-8">
-          <div className="flex items-center gap-4 text-dim text-sm">
+          <div className="flex items-center gap-4 text-gray-600 text-sm">
             <Spinner size={20} className="border-2" /> {t.loading.movies}
           </div>
         </div>
@@ -48,11 +47,10 @@ export default function TrendingMoviesGallery({ timeWindow = "day" }) {
     return (
       <div className="w-full">
         <div className="w-full max-w-[1240px] mx-auto mb-4 px-4 sm:px-8 flex items-center gap-4">
-        <h3 className="font-display font-semibold text-2xl leading-none text-screen">{t.navigation.films}</h3>
-        <span className="flex-1 h-px bg-rule" aria-hidden="true" />
+        <h3 className="font-semibold text-lg leading-none text-gray-700">{t.navigation.films}</h3>
         </div>
         <div className="max-w-[1240px] mx-auto flex items-center justify-center min-h-[260px] px-4 sm:px-8">
-          <p className="text-rouge text-sm">{error}</p>
+          <p className="text-red-700 text-sm">{error}</p>
         </div>
       </div>
     );
@@ -61,8 +59,7 @@ export default function TrendingMoviesGallery({ timeWindow = "day" }) {
   return (
     <div className="w-full">
       <div className="w-full max-w-[1240px] mx-auto mb-4 px-4 sm:px-8 flex items-center gap-4">
-        <h3 className="font-display font-semibold text-2xl leading-none text-screen">{t.navigation.films}</h3>
-        <span className="flex-1 h-px bg-rule" aria-hidden="true" />
+        <h3 className="font-semibold text-lg leading-none text-gray-700">{t.navigation.films}</h3>
       </div>
       <div className="max-w-[1240px] mx-auto px-4 sm:px-8">
         <SimpleBar autoHide={false} className="w-full">

@@ -52,7 +52,7 @@ export default function MovieCard({ movie }) {
       {/* Note */}
       <div className="note absolute bottom-1 right-1.5 flex flex-row items-center justify-center gap-1 drop-shadow-md">
         <p className="text-screen font-semibold h-fit tabular">{formatNote(movie.vote_average)}</p>
-        <FaStar className="text-rouge mb-0.5" aria-hidden="true" />
+        <FaStar className="text-brand-light mb-0.5" aria-hidden="true" />
       </div>
 
       {/* Informations */}

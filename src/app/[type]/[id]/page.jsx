@@ -127,7 +127,7 @@ export default function MediaDetailsPage() {
       stars.push(
         <FaStar 
           key={i} 
-          className={`${i <= normalizedRating ? 'text-rouge' : 'text-rule-strong'} text-xs`} 
+          className={`${i <= normalizedRating ? 'text-brand-light' : 'text-rule-strong'} text-xs`} 
           aria-hidden="true"
         />
       );
@@ -190,10 +190,10 @@ export default function MediaDetailsPage() {
     return (
       <div className="min-h-screen bg-ink flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="font-display font-extrabold text-4xl text-screen mb-6">{t.errors.loadingError}</h1>
+          <h1 className="font-display font-bold text-4xl text-screen mb-6">{t.errors.loadingError}</h1>
           <button 
             onClick={() => router.back()}
-            className="bg-rouge text-ink font-semibold px-6 py-2.5 hover:bg-screen transition-colors"
+            className="rounded-md bg-brand text-white font-semibold px-6 py-2.5 hover:bg-blue-500 transition-colors"
           >
             {t.actions.goBack}
           </button>
@@ -218,7 +218,7 @@ export default function MediaDetailsPage() {
   const backButton = (
     <button
       onClick={() => router.back()}
-      className="inline-flex items-center gap-2 bg-ink/80 hover:bg-screen hover:text-ink text-screen border border-rule-strong px-3 sm:px-4 py-2 text-sm font-semibold transition-colors"
+      className="inline-flex items-center gap-2 bg-ink/80 hover:bg-brand hover:text-white hover:border-brand text-screen rounded-md border border-rule-strong px-3 sm:px-4 py-2 text-sm font-semibold transition-colors"
       aria-label={t.actions.goBack}
     >
       <FaArrowLeft className="text-xs" aria-hidden="true" />
@@ -229,7 +229,7 @@ export default function MediaDetailsPage() {
   const trailerButton = trailerVideo && (
     <button
       onClick={() => setShowTrailer(true)}
-      className="inline-flex items-center gap-2.5 bg-rouge text-ink hover:bg-screen px-4 sm:px-5 py-2.5 font-semibold text-sm sm:text-base transition-colors"
+      className="inline-flex items-center gap-2.5 rounded-md bg-brand text-white hover:bg-blue-500 px-4 sm:px-5 py-2.5 font-semibold text-sm sm:text-base transition-colors"
       aria-label={t.details.watchTrailer}
     >
       <FaPlay className="text-xs" aria-hidden="true" />
@@ -238,11 +238,11 @@ export default function MediaDetailsPage() {
   );
 
   // Fiche technique (lignes du programme)
-  const factRow = "grid grid-cols-[6.5rem_1fr] sm:grid-cols-[9rem_1fr] gap-3 py-2.5 border-b border-rule";
+  const factRow = "grid grid-cols-[7rem_1fr] sm:grid-cols-[9rem_1fr] lg:grid-cols-1 gap-x-3 gap-y-0.5 py-2";
   const factLabel = "text-sm text-faint";
   const factValue = "text-sm sm:text-base text-screen";
 
-  const sectionTitle = "font-display font-extrabold text-4xl sm:text-5xl leading-none text-screen";
+  const sectionTitle = "font-display font-bold text-3xl sm:text-4xl leading-tight text-screen";
 
   return (
     <div className="min-h-screen flex flex-col bg-ink">
@@ -287,16 +287,16 @@ export default function MediaDetailsPage() {
 
               {/* Informations */}
               <div className="min-w-0 pt-14 sm:pt-20 lg:pt-24">
-                <h1 className="font-display font-extrabold text-[2.1rem] sm:text-5xl lg:text-7xl leading-[0.9] text-screen break-words">{title}</h1>
+                <h1 className="font-display font-bold text-[1.75rem] sm:text-4xl lg:text-5xl leading-[1.05] text-screen break-words">{title}</h1>
                 {media.tagline && (
-                  <p className="mt-3 font-serif italic text-lg sm:text-2xl text-dim leading-snug">{media.tagline}</p>
+                  <p className="mt-3 font-medium text-lg sm:text-2xl text-dim leading-snug">{media.tagline}</p>
                 )}
 
                 {/* Note */}
                 <div className="mt-4 sm:mt-6 flex items-baseline gap-2 tabular">
-                  <span className="font-display font-extrabold text-4xl sm:text-5xl leading-none text-rouge">{formatNote(media.vote_average)}</span>
+                  <span className="font-display font-bold text-3xl sm:text-4xl leading-tight text-brand-light">{formatNote(media.vote_average)}</span>
                   <span className="text-sm text-faint">/10</span>
-                  <span className="text-sm text-faint hidden sm:inline">· {media.vote_count} {t.details.votes}</span>
+                  <span className="text-sm text-faint hidden sm:inline ml-2">{media.vote_count} {t.details.votes}</span>
                 </div>
 
                 {/* Bouton Trailer desktop */}
@@ -313,7 +313,7 @@ export default function MediaDetailsPage() {
 
             {/* Fiche + synopsis */}
             <div className="mt-10 sm:mt-14 grid gap-10 lg:grid-cols-[18rem_1fr] lg:gap-12">
-              <dl className="border-t border-rule-strong">
+              <dl className="bg-ink-2 rounded-md px-5 py-3 self-start">
                 <div className={factRow}>
                   <dt className={factLabel}>{isMovie ? t.meta.releaseDate : t.meta.firstAirDate}</dt>
                   <dd className={`${factValue} tabular`}>
@@ -333,7 +333,7 @@ export default function MediaDetailsPage() {
                 {media.genres && media.genres.length > 0 && (
                   <div className={factRow}>
                     <dt className={factLabel}>Genres</dt>
-                    <dd className={factValue}>{media.genres.map((g) => g.name).join(" / ")}</dd>
+                    <dd className={factValue}>{media.genres.map((g) => g.name).join(", ")}</dd>
                   </div>
                 )}
                 {media.production_countries && media.production_countries.length > 0 && (
@@ -362,7 +362,7 @@ export default function MediaDetailsPage() {
                   href={`/person/${person.id}`}
                   className={`group flex flex-col ${className}`}
                 >
-                  <div className="aspect-[3/4] overflow-hidden bg-ink-3 outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color]">
+                  <div className="aspect-[3/4] overflow-hidden rounded-md bg-ink-3 outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color]">
                     <img
                       src={
                         person.profile_path
@@ -374,7 +374,7 @@ export default function MediaDetailsPage() {
                       className="w-full h-full object-cover grayscale-[35%] group-hover:grayscale-0 transition-[filter]"
                     />
                   </div>
-                  <h3 className="mt-2 font-semibold text-screen text-sm leading-snug line-clamp-2 group-hover:underline underline-offset-2 decoration-rouge">
+                  <h3 className="mt-2 font-semibold text-screen text-sm leading-snug line-clamp-2 group-hover:underline underline-offset-2 decoration-brand-light">
                     {person.name}
                   </h3>
                   {sublabel && (
@@ -384,7 +384,7 @@ export default function MediaDetailsPage() {
               );
 
               return (
-                <section className="mt-16 sm:mt-20 pt-8 border-t border-rule-strong">
+                <section className="mt-16 sm:mt-20">
                   {/* Réalisateurs */}
                   {directorsUnique.length > 0 && (
                     <div className="mb-12">
@@ -437,7 +437,7 @@ export default function MediaDetailsPage() {
 
             {/* Section Avis */}
             {allReviews && allReviews.length > 0 && (
-              <section className="mt-16 sm:mt-20 pt-8 border-t border-rule-strong">
+              <section className="mt-16 sm:mt-20">
                 <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-6 gap-4">
                   <div>
                     <h2 className={sectionTitle}>{t.details.reviews}</h2>
@@ -456,7 +456,7 @@ export default function MediaDetailsPage() {
                         id="review-filter"
                         value={reviewFilter}
                         onChange={(e) => setReviewFilter(e.target.value)}
-                        className="w-full bg-ink border border-rule-strong px-3 py-2 text-sm text-screen hover:border-dim focus:border-screen"
+                        className="w-full bg-ink rounded-md border border-rule-strong px-3 py-2 text-sm text-screen hover:border-dim focus:border-screen"
                       >
                         <option value="all">{t.reviewsSystem.filters.all}</option>
                         <option value="positive">{t.reviewsSystem.filters.positive}</option>
@@ -471,7 +471,7 @@ export default function MediaDetailsPage() {
                         id="review-sort"
                         value={reviewSort}
                         onChange={(e) => setReviewSort(e.target.value)}
-                        className="w-full bg-ink border border-rule-strong px-3 py-2 text-sm text-screen hover:border-dim focus:border-screen"
+                        className="w-full bg-ink rounded-md border border-rule-strong px-3 py-2 text-sm text-screen hover:border-dim focus:border-screen"
                       >
                         <option value="newest">{t.reviewsSystem.sorts.newest}</option>
                         <option value="oldest">{t.reviewsSystem.sorts.oldest}</option>
@@ -482,9 +482,9 @@ export default function MediaDetailsPage() {
                   </div>
                 </div>
                 
-                <div className="border-t border-rule">
+                <div className="flex flex-col gap-8">
                   {filteredReviews.slice(0, reviewsToShow).map((review) => (
-                    <article key={review.id} className="grid sm:grid-cols-[14rem_1fr] gap-3 sm:gap-8 py-6 border-b border-rule">
+                    <article key={review.id} className="grid sm:grid-cols-[14rem_1fr] gap-3 sm:gap-8">
                       <header className="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-2">
                         <div className="w-10 h-10 bg-ink-3 flex items-center justify-center flex-shrink-0 overflow-hidden">
                           {review.author_details?.avatar_path && !review.author_details.avatar_path.includes('gravatar') ? (
@@ -522,7 +522,7 @@ export default function MediaDetailsPage() {
                             </p>
                             <button
                               onClick={() => toggleReviewExpansion(review.id)}
-                              className="text-screen underline underline-offset-2 decoration-rouge hover:text-rouge text-sm mt-2 font-semibold transition-colors"
+                              className="text-screen underline underline-offset-2 decoration-brand-light hover:text-brand-light text-sm mt-2 font-semibold transition-colors"
                             >
                               {expandedReviews.has(review.id) ? t.details.readLess : t.details.readMore}
                             </button>
@@ -540,7 +540,7 @@ export default function MediaDetailsPage() {
                   <div className="text-center mt-8">
                     <button
                       onClick={() => setReviewsToShow(prev => prev + 5)}
-                      className="border border-rule-strong text-screen hover:bg-screen hover:text-ink hover:border-screen px-6 py-3 font-semibold text-sm transition-colors"
+                      className="rounded-md border border-rule-strong text-screen hover:bg-brand hover:text-white hover:border-brand px-6 py-3 font-semibold text-sm transition-colors"
                     >
                       {t.reviewsSystem.showMore}
                     </button>
@@ -567,9 +567,9 @@ export default function MediaDetailsPage() {
             )}
 
             {allReviews && allReviews.length === 0 && (
-              <section className="mt-16 sm:mt-20 pt-8 border-t border-rule-strong">
+              <section className="mt-16 sm:mt-20">
                 <h2 className={`${sectionTitle} mb-4`}>{t.details.reviews}</h2>
-                <p className="text-dim font-serif italic text-lg">{t.details.noReviews}</p>
+                <p className="text-dim font-medium text-lg">{t.details.noReviews}</p>
               </section>
             )}
           </div>
@@ -588,7 +588,7 @@ export default function MediaDetailsPage() {
               <button
                 type="button"
                 onClick={() => setShowTrailer(false)}
-                className="absolute -top-12 right-0 z-10 flex items-center justify-center w-10 h-10 text-screen hover:text-rouge transition-colors"
+                className="absolute -top-12 right-0 z-10 flex items-center justify-center w-10 h-10 text-screen hover:text-brand-light transition-colors"
                 aria-label={t.actions.goBack}
               >
                 <FaTimes className="text-2xl" aria-hidden="true" />
