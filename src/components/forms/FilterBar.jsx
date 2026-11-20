@@ -19,7 +19,7 @@ const GENRES = [
 ];
 
 /**
- * Barre de filtres avancée avec design moderne
+ * Barre de filtres avancée
  * Permet de filtrer par tri, année, note minimale et genres
  */
 export default function FilterBar({ onChange, initial = {}, compact = false }) {
@@ -78,144 +78,138 @@ export default function FilterBar({ onChange, initial = {}, compact = false }) {
     setGenres([]);
   };
 
+  const labelClass = "flex items-center gap-2 text-sm font-semibold text-dim";
+  const fieldClass =
+    "w-full bg-ink border border-rule-strong px-3 py-2.5 text-screen text-sm placeholder:text-faint hover:border-dim focus:border-screen transition-colors";
+
   return (
-    <div className="w-full max-w-6xl flex justify-center px-4 pb-2 mx-auto">
+    <div className="w-full pb-2">
       <div className="w-full">
         {/* Header avec toggle */}
-        <div className="mb-2 sm:mb-4">
+        <div className="mb-3">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="group flex items-center gap-3 w-auto bg-gradient-to-r from-gray-900/90 to-gray-800/90 backdrop-blur-lg border border-gray-700/50 rounded-xl px-6 py-3 sm:py-4 hover:border-blue-500/50 transition-all duration-300 shadow-lg hover:shadow-blue-500/20"
+            aria-expanded={isExpanded}
+            className="flex items-center gap-3 border border-rule-strong px-4 py-2.5 text-screen hover:border-screen transition-colors"
           >
-            <div className="flex items-center gap-2">
-              <FaFilter className="text-blue-400" />
-              <span className="text-white font-medium text-base sm:text-lg">Filtres</span>
-            </div>
+            <FaFilter className="text-faint text-xs" aria-hidden="true" />
+            <span className="font-semibold text-sm">Filtres</span>
             {hasActiveFilters && (
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <span className="w-1.5 h-1.5 bg-rouge" aria-hidden="true"></span>
             )}
-            <FaChevronDown 
-              className={`text-gray-400 transition-transform duration-300 ${
+            <FaChevronDown
+              className={`text-faint text-xs transition-transform duration-200 ${
                 isExpanded ? 'rotate-180' : ''
-              }`} 
+              }`}
+              aria-hidden="true"
             />
           </button>
         </div>
 
         {/* Panel de filtres */}
-        <div className={`transition-all duration-500 ease-in-out overflow-hidden ${
-          isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
-        }`}
-          style={{
-            // Pour mobile, maxHeight élevé pour permettre le scroll, sinon collapse
-            transitionProperty: 'max-height, opacity',
-          }}
-        >
-          <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-xl border border-gray-700/30 rounded-2xl p-3 sm:p-8 shadow-2xl max-h-[80vh] overflow-y-auto">
-            <div className="relative z-10">
-              {/* Header avec reset */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-8 gap-2 sm:gap-0">
-                <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-                  <FaFilter className="text-blue-400" />
-                  <span className="hidden xs:inline">Personnaliser votre recherche</span>
-                  <span className="inline xs:hidden">Recherche</span>
-                </h3>
-                {hasActiveFilters && (
-                  <button
-                    onClick={resetFilters}
-                    className="flex items-center gap-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 text-red-400 hover:text-red-300 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-xs sm:text-sm font-medium"
+        <div className={`transition-[max-height,opacity] duration-300 ease-out overflow-hidden ${
+          isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 invisible'
+        }`}>
+          <div className="bg-ink-2 border border-rule p-4 sm:p-6 mb-4 max-h-[80vh] overflow-y-auto">
+            {/* Header avec reset */}
+            <div className="flex flex-wrap items-center justify-between mb-5 gap-2">
+              <h3 className="font-display font-semibold text-2xl leading-none text-screen">
+                <span className="hidden xs:inline">Personnaliser votre recherche</span>
+                <span className="inline xs:hidden">Recherche</span>
+              </h3>
+              {hasActiveFilters && (
+                <button
+                  onClick={resetFilters}
+                  className="flex items-center gap-1.5 text-rouge hover:text-screen text-sm font-semibold transition-colors"
+                >
+                  <FaTimes className="text-xs" aria-hidden="true" />
+                  Réinitialiser
+                </button>
+              )}
+            </div>
+
+            {/* Filtres principaux */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 mb-6">
+              {/* Tri */}
+              <div className="space-y-2">
+                <label className={labelClass} htmlFor="filter-sort">
+                  <FaSort className="text-faint" aria-hidden="true" />
+                  {t.filters.sort}
+                </label>
+                <div className="relative">
+                  <select
+                    id="filter-sort"
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className={`${fieldClass} appearance-none pr-9 cursor-pointer`}
                   >
-                    <FaTimes className="text-xs" />
-                    Réinitialiser
-                  </button>
-                )}
+                    {SORT_OPTIONS.map((o) => (
+                      <option key={o.value} value={o.value} className="bg-ink-2">
+                        {t.filters.sortOptions[o.labelKey]}
+                      </option>
+                    ))}
+                  </select>
+                  <FaChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-faint text-xs pointer-events-none" aria-hidden="true" />
+                </div>
               </div>
 
-              {/* Filtres principaux */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                {/* Tri */}
-                <div className="space-y-2 sm:space-y-3">
-                  <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-300">
-                    <FaSort className="text-blue-400" />
-                    {t.filters.sort}
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="w-full appearance-none bg-gray-800/80 border border-gray-600/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 pr-8 sm:pr-10 text-white text-xs sm:text-base focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 cursor-pointer hover:bg-gray-700/80"
+              {/* Année */}
+              <div className="space-y-2">
+                <label className={labelClass} htmlFor="filter-year">
+                  <FaCalendarAlt className="text-faint" aria-hidden="true" />
+                  {t.filters.year}
+                </label>
+                <input
+                  id="filter-year"
+                  type="number"
+                  placeholder="2024"
+                  value={year}
+                  onChange={(e) => setYear(e.target.value)}
+                  className={`${fieldClass} tabular`}
+                />
+              </div>
+
+              {/* Note minimale */}
+              <div className="space-y-2">
+                <label className={labelClass} htmlFor="filter-vote">
+                  <FaStar className="text-faint" aria-hidden="true" />
+                  {t.filters.minRating}
+                </label>
+                <input
+                  id="filter-vote"
+                  type="number"
+                  placeholder="7.0"
+                  min="0"
+                  max="10"
+                  step="0.1"
+                  value={minVote}
+                  onChange={(e) => setMinVote(e.target.value)}
+                  className={`${fieldClass} tabular`}
+                />
+              </div>
+            </div>
+
+            {/* Genres */}
+            <div className="space-y-3">
+              <h4 className={labelClass}>Genres</h4>
+              <div className="flex flex-wrap gap-2">
+                {GENRES.map((g) => {
+                  const active = genres.includes(g.id);
+                  return (
+                    <button
+                      key={g.id}
+                      onClick={() => toggleGenre(g.id)}
+                      aria-pressed={active}
+                      className={`px-3 py-1.5 text-sm font-semibold border transition-colors duration-150 ${
+                        active
+                          ? "bg-screen text-ink border-screen"
+                          : "text-dim border-rule-strong hover:text-screen hover:border-screen"
+                      }`}
                     >
-                      {SORT_OPTIONS.map((o) => (
-                        <option key={o.value} value={o.value} className="bg-gray-800">
-                          {t.filters.sortOptions[o.labelKey]}
-                        </option>
-                      ))}
-                    </select>
-                    <FaChevronDown className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-                  </div>
-                </div>
-
-                {/* Année */}
-                <div className="space-y-2 sm:space-y-3">
-                  <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-300">
-                    <FaCalendarAlt className="text-green-400" />
-                    {t.filters.year}
-                  </label>
-                  <input
-                    type="number"
-                    placeholder="2024"
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
-                    className="w-full bg-gray-800/80 border border-gray-600/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white text-xs sm:text-base placeholder-gray-400 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 hover:bg-gray-700/80 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
-                  />
-                </div>
-
-                {/* Note minimale */}
-                <div className="space-y-2 sm:space-y-3">
-                  <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-gray-300">
-                    <FaStar className="text-yellow-400" />
-                    {t.filters.minRating}
-                  </label>
-                  <input
-                    type="number"
-                    placeholder="7.0"
-                    min="0"
-                    max="10"
-                    step="0.1"
-                    value={minVote}
-                    onChange={(e) => setMinVote(e.target.value)}
-                    className="w-full bg-gray-800/80 border border-gray-600/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white text-xs sm:text-base placeholder-gray-400 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition-all duration-200 hover:bg-gray-700/80 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
-                  />
-                </div>
-              </div>
-
-              {/* Genres */}
-              <div className="space-y-3 sm:space-y-4">
-                <h4 className="text-xs sm:text-sm font-medium text-gray-300 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                  Genres
-                </h4>
-                <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {GENRES.map((g) => {
-                    const active = genres.includes(g.id);
-                    return (
-                      <button
-                        key={g.id}
-                        onClick={() => toggleGenre(g.id)}
-                        className={`relative group px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
-                          active
-                            ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25 border border-blue-400/50"
-                            : "bg-gray-800/60 text-gray-300 border border-gray-600/50 hover:border-purple-500/50 hover:text-white hover:bg-gray-700/60"
-                        }`}
-                      >
-                        <span className="relative z-10">{t.genres[g.nameKey]}</span>
-                        {active && (
-                          <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-700 rounded-xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
+                      {t.genres[g.nameKey]}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

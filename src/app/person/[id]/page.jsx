@@ -64,19 +64,19 @@ export default function PersonPage() {
 
   if (loading)
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-ink flex items-center justify-center">
         <Loader />
       </div>
     );
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-ink flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">{t.errors.loadingError}</h1>
+          <h1 className="font-display font-extrabold text-4xl text-screen mb-6">{t.errors.loadingError}</h1>
           <button
             onClick={() => router.back()}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-rouge text-ink font-semibold px-6 py-2.5 hover:bg-screen transition-colors"
           >
             {t.actions.goBack}
           </button>
@@ -110,123 +110,138 @@ export default function PersonPage() {
   });
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col bg-ink">
       <NavBar />
-      <div className="relative pt-[76px] pb-8 min-h-screen bg-gray-900 text-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="relative pt-16 sm:pt-[76px] pb-16 flex-1 bg-ink text-screen">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-8 pt-6">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 bg-black/50 hover:bg-black/70 px-3 sm:px-4 py-2 rounded-lg transition-colors backdrop-blur-sm text-sm sm:text-base mb-6"
+            className="inline-flex items-center gap-2 border border-rule-strong text-screen hover:bg-screen hover:text-ink px-3 sm:px-4 py-2 text-sm font-semibold transition-colors mb-8"
             aria-label={t.actions.goBack}
           >
-            <FaArrowLeft className="text-sm" />
+            <FaArrowLeft className="text-xs" aria-hidden="true" />
             <span className="hidden sm:inline">{t.actions.goBack}</span>
           </button>
 
-          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 md:gap-10">
-            <div className="flex-shrink-0 mx-auto sm:mx-0">
-              <div className="w-48 sm:w-56 md:w-64 aspect-[2/3] rounded-xl overflow-hidden bg-gray-800 shadow-2xl ring-2 ring-gray-700/50">
-                {profileUrl ? (
-                  <img
-                    src={profileUrl}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    fetchPriority="high"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-800 text-gray-500">
-                    <span className="text-4xl font-light">?</span>
-                  </div>
-                )}
-              </div>
+          <div className="grid grid-cols-[7.5rem_1fr] sm:grid-cols-[13rem_1fr] lg:grid-cols-[18rem_1fr] gap-4 sm:gap-8 lg:gap-12 items-start">
+            <div className="w-full aspect-[2/3] overflow-hidden bg-ink-3 outline outline-1 -outline-offset-1 outline-white/15">
+              {profileUrl ? (
+                <img
+                  src={profileUrl}
+                  alt={person.name}
+                  className="w-full h-full object-cover"
+                  fetchPriority="high"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-faint">
+                  <span className="font-display text-5xl">?</span>
+                </div>
+              )}
             </div>
 
-            <div className="flex-1 min-w-0">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
+            <div className="min-w-0">
+              <h1 className="font-display font-extrabold text-[2.1rem] sm:text-5xl lg:text-7xl leading-[0.9] text-screen break-words">
                 {person.name}
               </h1>
               {person.known_for_department && (
-                <p className="text-gray-400 text-sm sm:text-base mb-4">
+                <p className="mt-3 font-serif italic text-lg sm:text-2xl text-dim">
                   {t.person.knownFor} : {person.known_for_department}
                 </p>
               )}
 
               {person.biography && (
-                <section className="mb-8">
-                  <h2 className="text-lg sm:text-xl font-bold text-white mb-3">
+                <section className="hidden sm:block mt-8">
+                  <h2 className="font-display font-extrabold text-3xl sm:text-4xl leading-none text-screen mb-4">
                     {t.person.biography}
                   </h2>
-                  <p className="text-gray-300 leading-relaxed text-sm sm:text-base whitespace-pre-line line-clamp-[12] sm:line-clamp-none">
+                  <p className="text-dim leading-relaxed text-base whitespace-pre-line max-w-[68ch]">
                     {person.biography}
                   </p>
                 </section>
               )}
 
               {!person.biography && (
-                <p className="text-gray-500 text-sm mb-8">{t.person.noBiography}</p>
+                <p className="hidden sm:block mt-8 text-faint text-sm">{t.person.noBiography}</p>
               )}
             </div>
           </div>
 
+          {/* Biographie mobile, pleine largeur */}
+          <div className="sm:hidden mt-8">
+            {person.biography ? (
+              <section>
+                <h2 className="font-display font-extrabold text-3xl leading-none text-screen mb-3">
+                  {t.person.biography}
+                </h2>
+                <p className="text-dim leading-relaxed text-base whitespace-pre-line line-clamp-[12]">
+                  {person.biography}
+                </p>
+              </section>
+            ) : (
+              <p className="text-faint text-sm">{t.person.noBiography}</p>
+            )}
+          </div>
+
           {uniqueCredits.length > 0 && (
-            <section className="mt-12 sm:mt-16">
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-6">
+            <section className="mt-14 sm:mt-20 pt-8 border-t border-rule-strong">
+              <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-none text-screen mb-6">
                 {t.person.knownFor}
               </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5">
+              <ol className="border-t border-rule">
                 {uniqueCredits.slice(0, 24).map((item) => {
                   const mediaType = item.media_type;
                   const mediaId = item.id;
                   const href = getMediaUrl(mediaType, mediaId);
                   const posterPath = item.poster_path || item.backdrop_path;
                   const posterUrl = posterPath
-                    ? `https://image.tmdb.org/t/p/w300${posterPath}`
+                    ? `https://image.tmdb.org/t/p/w154${posterPath}`
                     : "https://placehold.co/300x450@2x.png";
                   const role = item.character || item.job;
+                  const date = getMediaDate(item);
 
                   return (
-                    <Link
-                      key={`${mediaType}-${mediaId}`}
-                      href={href}
-                      className="group block rounded-xl overflow-hidden bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                    >
-                      <div className="aspect-[2/3] overflow-hidden">
-                        <img
-                          src={posterUrl}
-                          alt=""
-                          loading="lazy"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                      <div className="p-3 bg-gradient-to-t from-gray-900 to-gray-800">
-                        <div className="flex items-center gap-1.5 text-gray-400 mb-1">
-                          {mediaType === "movie" ? (
-                            <FaFilm className="text-xs flex-shrink-0" />
-                          ) : (
-                            <FaTv className="text-xs flex-shrink-0" />
-                          )}
-                          <span className="text-xs">
-                            {mediaType === "movie" ? t.person.movies : t.person.series}
-                          </span>
+                    <li key={`${mediaType}-${mediaId}`} className="border-b border-rule">
+                      <Link
+                        href={href}
+                        className="group grid grid-cols-[2.75rem_3.25rem_1fr] sm:grid-cols-[3rem_4.5rem_1fr_7rem] items-center gap-3 sm:gap-5 py-2.5 hover:bg-ink-2 transition-colors"
+                      >
+                        <div className="w-11 sm:w-12 aspect-[2/3] overflow-hidden bg-ink-3">
+                          <img
+                            src={posterUrl}
+                            alt={`Affiche : ${getMediaTitle(item)}`}
+                            loading="lazy"
+                            className="w-full h-full object-cover"
+                          />
                         </div>
-                        <h3 className="font-semibold text-white text-sm line-clamp-2 mb-0.5">
-                          {getMediaTitle(item)}
-                        </h3>
-                        {role && (
-                          <p className="text-xs text-gray-400 line-clamp-2">
-                            {item.character ? t.person.asCharacter : t.person.asJob} {role}
+                        <span className="font-display font-semibold text-xl sm:text-2xl text-faint tabular leading-none">
+                          {date ? formatDate(date) : "—"}
+                        </span>
+                        <div className="min-w-0">
+                          <h3 className="font-semibold text-screen text-sm sm:text-base leading-snug line-clamp-2 group-hover:underline underline-offset-2 decoration-rouge">
+                            {getMediaTitle(item)}
+                          </h3>
+                          {role && (
+                            <p className="text-xs sm:text-sm text-dim line-clamp-1">
+                              {item.character ? t.person.asCharacter : t.person.asJob} {role}
+                            </p>
+                          )}
+                          <p className="sm:hidden text-xs text-faint mt-0.5">
+                            {mediaType === "movie" ? t.person.movies : t.person.series}
                           </p>
-                        )}
-                        {getMediaDate(item) && (
-                          <p className="text-xs text-gray-500 mt-1">
-                            {formatDate(getMediaDate(item))}
-                          </p>
-                        )}
-                      </div>
-                    </Link>
+                        </div>
+                        <span className="hidden sm:flex items-center gap-1.5 text-sm text-faint justify-self-end pr-3">
+                          {mediaType === "movie" ? (
+                            <FaFilm className="text-xs" aria-hidden="true" />
+                          ) : (
+                            <FaTv className="text-xs" aria-hidden="true" />
+                          )}
+                          {mediaType === "movie" ? t.person.movies : t.person.series}
+                        </span>
+                      </Link>
+                    </li>
                   );
                 })}
-              </div>
+              </ol>
             </section>
           )}
         </div>

@@ -31,11 +31,12 @@ export default function TrendingSeriesGallery({ timeWindow = "day" }) {
   if (loading) {
     return (
       <div className="w-full">
-        <div className="w-full max-w-[1160px] m-auto mb-4 px-4 sm:px-8">
-          <h4 className="font-medium text-base sm:text-lg text-gray-700">{t.navigation.series}</h4>
+        <div className="w-full max-w-[1240px] mx-auto mb-4 px-4 sm:px-8 flex items-center gap-4">
+        <h3 className="font-display font-semibold text-2xl leading-none text-screen">{t.navigation.series}</h3>
+        <span className="flex-1 h-px bg-rule" aria-hidden="true" />
         </div>
-        <div className="max-w-[1160px] m-auto flex items-center justify-center min-h-[220px] px-4 sm:px-8">
-          <div className="flex items-center gap-4 text-gray-600 text-sm">
+        <div className="max-w-[1240px] mx-auto flex items-center justify-center min-h-[260px] px-4 sm:px-8">
+          <div className="flex items-center gap-4 text-dim text-sm">
             <Spinner size={20} className="border-2" /> {t.loading.series}
           </div>
         </div>
@@ -46,11 +47,12 @@ export default function TrendingSeriesGallery({ timeWindow = "day" }) {
   if (error) {
     return (
       <div className="w-full">
-        <div className="w-full max-w-[1160px] m-auto mb-4 px-4 sm:px-8">
-          <h4 className="font-medium text-base sm:text-lg text-gray-700">{t.navigation.series}</h4>
+        <div className="w-full max-w-[1240px] mx-auto mb-4 px-4 sm:px-8 flex items-center gap-4">
+        <h3 className="font-display font-semibold text-2xl leading-none text-screen">{t.navigation.series}</h3>
+        <span className="flex-1 h-px bg-rule" aria-hidden="true" />
         </div>
-        <div className="max-w-[1160px] m-auto flex items-center justify-center min-h-[220px] px-4 sm:px-8">
-          <p className="text-red-500 text-sm">{error}</p>
+        <div className="max-w-[1240px] mx-auto flex items-center justify-center min-h-[260px] px-4 sm:px-8">
+          <p className="text-rouge text-sm">{error}</p>
         </div>
       </div>
     );
@@ -58,20 +60,19 @@ export default function TrendingSeriesGallery({ timeWindow = "day" }) {
 
   return (
     <div className="w-full">
-      <div className="w-full max-w-[1160px] m-auto mb-4 px-4 sm:px-8">
-        <h4 className="font-medium text-base sm:text-lg text-gray-700">{t.navigation.series}</h4>
+      <div className="w-full max-w-[1240px] mx-auto mb-4 px-4 sm:px-8 flex items-center gap-4">
+        <h3 className="font-display font-semibold text-2xl leading-none text-screen">{t.navigation.series}</h3>
+        <span className="flex-1 h-px bg-rule" aria-hidden="true" />
       </div>
-      <div className="max-w-[1160px] m-auto flex content-center px-4 sm:px-8">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-8">
         <SimpleBar autoHide={false} className="w-full">
-          <div className="flex gap-4 sm:gap-6 pb-2">
-            {trendingSeries.map((series) => (
-              <LittleMediaCard 
-                key={`series-${series.id}`} 
-                media={series} 
-                mediaType="tv"
-              />
+          <ol className="flex gap-4 sm:gap-5 pb-4">
+            {trendingSeries.map((series, index) => (
+              <li key={`series-${series.id}`} className="flex-none">
+                <LittleMediaCard rank={index + 1} media={series} mediaType="tv" />
+              </li>
             ))}
-          </div>
+          </ol>
         </SimpleBar>
       </div>
     </div>

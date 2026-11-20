@@ -1,45 +1,74 @@
 @import "tailwindcss";
-@import 'simplebar-react/dist/simplebar.min.css';
+
+/*
+ * MDTB — direction « programme de cinémathèque »
+ * Fond noir chaud (salle éteinte), texte blanc écran, un seul accent rouge
+ * (fauteuil / lumière de sortie). Titres en Big Shoulders Display (affiches,
+ * génériques), texte courant en Instrument Sans, taglines en Instrument Serif.
+ */
+@theme {
+  --color-ink: #110f0e;
+  --color-ink-2: #1a1716;
+  --color-ink-3: #24201e;
+  --color-rule: #3b3532;
+  --color-rule-strong: #5a514c;
+  --color-screen: #f1ebe1;
+  --color-dim: #b3a99d;
+  --color-faint: #948a80;
+  --color-rouge: #ef5a5f;
+}
+
+/* Familles fournies par next/font (variables posées sur <html>) */
+@theme inline {
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), "Arial Narrow", ui-sans-serif, sans-serif;
+  --font-serif: var(--font-serif-face), Georgia, serif;
+}
 
 :root {
-  --background: var(--color-gray-950);
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: var(--color-gray-950);
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-ink);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-rule-strong) transparent;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-screen);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
+::selection {
+  background: var(--color-rouge);
+  color: var(--color-ink);
+}
+
+/* Focus visible net et cohérent partout */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-rouge);
+  outline-offset: 2px;
+}
+
+/* Chiffres alignés pour notes, années, rangs */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* SimpleBar : poignée discrète */
 .simplebar-scrollbar::before {
-  background-color: rgb(202, 240, 247); /* couleur de la poignée */
+  background-color: var(--color-rule-strong);
+  border-radius: 0;
 }
-
 .simplebar-track.simplebar-horizontal {
-  height: 12px; /* hauteur de la scrollbar horizontale */
+  height: 10px;
 }
-
 .simplebar-track.simplebar-vertical {
-  width: 3px; /* largeur de la scrollbar verticale */
-}
-
-.simplebar-scrollbar {
-  border-radius: 4px; /* coins arrondis */
+  width: 3px;
 }
 
 /* Scrollbar globale */
@@ -51,76 +80,49 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(202, 240, 247); /* Change ici la couleur pour correspondre à ton thème */
-  border-radius: 4px;
+  background-color: var(--color-rule-strong);
 }
 ::-webkit-scrollbar-button {
   display: none;
 }
 
-/* Firefox */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: rgb(209, 224, 227) transparent;
+/* Apparition sobre des grilles */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
-/* Animations utilitaires */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(4px);} to { opacity:1; transform: translateY(0);} }
-@keyframes shimmer { 0% { transform: translateX(-100%);} 100% { transform: translateX(100%);} }
-@keyframes gradient-x {
-  0%, 100% {
-    transform: translateX(-100%);
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-  50% {
-    transform: translateX(100%);
-  }
 }
 
-/* Classes utilitaires personnalisées */
-.animate-gradient-x {
-  animation: gradient-x 15s ease infinite;
-  background-size: 400% 400%;
-}
-
-/* Classes pour la troncature de texte */
-.line-clamp-1 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-}
-
-.line-clamp-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-}
-
+/* Troncature de texte */
+.line-clamp-1,
+.line-clamp-2,
 .line-clamp-3 {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
 }
+.line-clamp-1 { -webkit-line-clamp: 1; line-clamp: 1; }
+.line-clamp-2 { -webkit-line-clamp: 2; line-clamp: 2; }
+.line-clamp-3 { -webkit-line-clamp: 3; line-clamp: 3; }
 
-/* Touch optimizations for mobile */
+/* Optimisations tactiles */
 @media (max-width: 768px) {
-  /* Improve touch targets */
   button, a, [role="button"] {
     min-height: 44px;
     min-width: 44px;
   }
-  
-  /* Better mobile scrolling */
-  * {
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  /* Prevent zoom on form inputs */
+
   input[type="search"],
   input[type="text"],
   input[type="number"],
@@ -130,72 +132,13 @@ html {
   }
 }
 
-/* Utilities pour le texte multi-lignes */
-.line-clamp-1 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-}
-
-.line-clamp-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-}
-
-.line-clamp-3 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-}
-
-/* Optimisations pour mobile */
-@media (max-width: 640px) {
-  .movie-card {
-    min-height: 300px;
-  }
-  
-  .movie-poster {
-    min-height: 200px;
-  }
-  
-  /* Reduce text size on very small screens */
-  .movie-info h3 {
-    font-size: 0.8rem;
-    line-height: 1.2;
-  }
-  
-  .movie-info p {
-    font-size: 0.7rem;
-  }
-}
-
 /* Masquer les flèches des inputs number */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-/* Firefox */
 input[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
-}
-
-/* Style personnalisé pour les inputs number */
-input[type="number"].number-input-clean {
-  appearance: textfield;
-}
-
-input[type="number"].number-input-clean::-webkit-outer-spin-button,
-input[type="number"].number-input-clean::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }

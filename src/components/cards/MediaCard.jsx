@@ -2,18 +2,19 @@
 
 import { FaStar } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { 
-  formatNote, 
-  formatDateEnglish, 
-  getMediaTitle, 
+import {
+  formatNote,
+  formatDateEnglish,
+  getMediaTitle,
   getMediaReleaseDate,
   getTMDBImageUrl,
-  getPlaceholderImage 
+  getPlaceholderImage
 } from "../../services/utils/formatters.js";
 
 /**
  * Composant de carte média principal
  * Affiche une carte de film ou série avec poster, note, titre et date
+ * Fiche à filet : l'affiche d'abord, puis titre / date / note alignés.
  */
 export default function MediaCard({ media, mediaType = "movie" }) {
   const router = useRouter();
@@ -28,41 +29,56 @@ export default function MediaCard({ media, mediaType = "movie" }) {
     router.push(`/${mediaType}/${media.id}`);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.target !== e.currentTarget) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleCardClick();
+    }
+  };
+
   const title = getMediaTitle(media, mediaType);
   const releaseDate = getMediaReleaseDate(media, mediaType);
-  const posterUrl = getTMDBImageUrl(media.poster_path, 'w500') || getPlaceholderImage(200, 300);
+  const posterUrl = getTMDBImageUrl(media.poster_path, 'w342') || getPlaceholderImage(200, 300);
 
   return (
-    <div 
-      className="movie-card flex flex-col items-center w-full max-w-[200px] sm:w-[200px] h-[350px] sm:h-[400px] rounded-md overflow-hidden bg-gray-800 cursor-pointer drop-shadow-md hover:shadow-[0_0_15px_4px_rgba(59,130,246,0.7)] transition-shadow duration-100 mx-auto"
+    <div
+      className="group flex flex-col w-full cursor-pointer"
       onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+      role="link"
+      tabIndex={0}
+      aria-label={title}
     >
       {/* Poster */}
-      <div className="movie-poster relative w-full min-h-[250px] sm:min-h-[300px] overflow-hidden">
+      <div className="relative w-full aspect-[2/3] overflow-hidden bg-ink-3 outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color] duration-150">
         <img
-          alt={title}
+          alt={`Affiche : ${title}`}
           src={posterUrl}
-          className="object-cover border-b-black w-full h-full"
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
         />
         <div className="movie-overlay">
-          <button 
-            className="favorite-btn" 
+          <button
+            className="favorite-btn"
             onClick={handleFavoriteClick}
             aria-label="Ajouter aux favoris"
           />
         </div>
       </div>
 
-      {/* Note */}
-      <div className="note absolute bottom-1 right-1.5 flex flex-row items-center justify-center gap-1 drop-shadow-md">
-        <p className="text-gray-100 font-semibold h-fit text-sm sm:text-base">{formatNote(media.vote_average)}</p>
-        <FaStar className="text-yellow-500 mb-0.5 text-sm sm:text-base" />
-      </div>
-
       {/* Informations */}
-      <div className="movie-info p-3 sm:p-5 pt-4 sm:pt-7 pb-4 sm:pb-7 flex h-[100px] flex-col justify-center gap-0.5 items-center text-center overflow-hidden w-full">
-        <h3 className="text-sm sm:text-[0.91em] text-white text-left w-full font-bold line-clamp-2">{title}</h3>
-        <p className="text-xs text-left w-full text-gray-400">{formatDateEnglish(releaseDate)}</p>
+      <div className="pt-2.5 border-b border-rule pb-2.5 flex-1 flex flex-col">
+        <h3 className="text-sm font-semibold leading-snug text-screen line-clamp-2 group-hover:underline underline-offset-2 decoration-rouge">
+          {title}
+        </h3>
+        <div className="mt-auto pt-1 flex items-center justify-between gap-2 text-xs tabular">
+          <span className="text-faint">{formatDateEnglish(releaseDate)}</span>
+          <span className="flex items-center gap-1 text-screen font-semibold">
+            <FaStar className="text-rouge text-[0.65rem]" aria-hidden="true" />
+            {formatNote(media.vote_average)}
+          </span>
+        </div>
       </div>
     </div>
   );

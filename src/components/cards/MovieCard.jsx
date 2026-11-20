@@ -30,13 +30,13 @@ export default function MovieCard({ movie }) {
 
   return (
     <div 
-      className="movie-card flex flex-col items-center w-[200px] h-[400px] rounded-md overflow-hidden bg-gray-800 cursor-pointer drop-shadow-md hover:shadow-[0_0_15px_4px_rgba(59,130,246,0.7)] transition-shadow duration-100"
+      className="relative flex flex-col items-center w-[200px] h-[400px] overflow-hidden bg-ink-2 border border-rule hover:border-screen cursor-pointer transition-colors duration-150"
       onClick={handleCardClick}
     >
       {/* Poster */}
-      <div className="movie-poster relative w-[200px] min-h-[300px] overflow-hidden">
+      <div className="relative w-[200px] min-h-[300px] overflow-hidden">
         <img
-          alt={movie.title}
+          alt={`Affiche : ${movie.title}`}
           src={posterUrl}
           className="object-cover border-b-black"
         />
@@ -51,14 +51,14 @@ export default function MovieCard({ movie }) {
 
       {/* Note */}
       <div className="note absolute bottom-1 right-1.5 flex flex-row items-center justify-center gap-1 drop-shadow-md">
-        <p className="text-gray-100 font-semibold h-fit">{formatNote(movie.vote_average)}</p>
-        <FaStar className="text-yellow-500 mb-0.5" />
+        <p className="text-screen font-semibold h-fit tabular">{formatNote(movie.vote_average)}</p>
+        <FaStar className="text-rouge mb-0.5" aria-hidden="true" />
       </div>
 
       {/* Informations */}
-      <div className="movie-info p-5 pt-7 pb-7 flex h-[100px] flex-col justify-center gap-0.5 items-center text-center overflow-hidden w-full">
-        <h3 className="text-[0.91em] text-white text-left w-full font-bold">{movie.title}</h3>
-        <p className="text-xs text-left w-full text-gray-400">{formatDateEnglish(movie.release_date)}</p>
+      <div className="p-5 pt-7 pb-7 flex h-[100px] flex-col justify-center gap-0.5 items-center text-center overflow-hidden w-full">
+        <h3 className="text-[0.91em] text-screen text-left w-full font-bold">{movie.title}</h3>
+        <p className="text-xs text-left w-full text-faint">{formatDateEnglish(movie.release_date)}</p>
       </div>
     </div>
   );

@@ -2,9 +2,9 @@ import { Footer, NavBar, TrendingGallery, MediaDiscover, RecentTrailersGallery }
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-items-center min-h-screen">
+    <div className="flex flex-col min-h-screen bg-ink">
       <NavBar />
-      <main className="w-full pt-[76px]">
+      <main className="w-full pt-16 sm:pt-[76px]">
         <MediaDiscover />
         <TrendingGallery />
         <RecentTrailersGallery include="both" />

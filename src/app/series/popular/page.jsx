@@ -94,13 +94,16 @@ export default function PopularSeries() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-items-center min-h-screen bg-gray-950">
+    <div className="flex flex-col min-h-screen bg-ink">
       <NavBar />
-      <main className="pt-[76px] w-full">
+      <main className="pt-16 sm:pt-[76px] w-full flex-1">
         <SearchBar onSearch={handleSearch} />
-        <div className="pt-[70px] max-w-7/8 sm:max-w-2xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto w-full">
+        <div className="pt-[52px] max-w-[1240px] mx-auto w-full px-4 sm:px-8">
+          <h1 className="font-display font-extrabold text-5xl sm:text-6xl lg:text-7xl leading-[0.9] pt-10 sm:pt-12 pb-6">
+            {t.pages.popularSeries}
+          </h1>
           <FilterBar onChange={setFilters} />
-          <div className="px-4">
+          <div className="pt-4">
             <MediaGallery
               items={series}
               pageLoading={pageLoading}
@@ -108,7 +111,6 @@ export default function PopularSeries() {
               error={error}
               onLoadMore={handleLoadMore}
               canLoadMore={!hasSearched}
-              title={t.pages.popularSeries}
               mediaType="tv"
             />
           </div>

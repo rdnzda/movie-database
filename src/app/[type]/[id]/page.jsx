@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { FaStar, FaArrowLeft, FaCalendarAlt, FaClock, FaGlobe, FaPlay, FaTimes, FaUser } from "react-icons/fa";
+import { FaStar, FaArrowLeft, FaCalendarAlt, FaClock, FaPlay, FaTimes, FaUser } from "react-icons/fa";
 import { useLanguage } from "../../../contexts/LanguageContext";
 import { getMovieDetails, getSeriesDetails, getMovieCredits, getSeriesCredits, getMovieVideos, getSeriesVideos, getMovieReviews, getSeriesReviews } from "../../../services/api";
 import { Footer, Loader } from "../../../components";
@@ -127,7 +127,8 @@ export default function MediaDetailsPage() {
       stars.push(
         <FaStar 
           key={i} 
-          className={`${i <= normalizedRating ? 'text-yellow-400' : 'text-gray-400'} text-sm`} 
+          className={`${i <= normalizedRating ? 'text-rouge' : 'text-rule-strong'} text-xs`} 
+          aria-hidden="true"
         />
       );
     }
@@ -180,19 +181,19 @@ export default function MediaDetailsPage() {
   }, [allReviews, reviewFilter, reviewSort]);
 
   if (loading) return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    <div className="min-h-screen bg-ink flex items-center justify-center">
       <Loader />
     </div>
   );
   
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-ink flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">{t.errors.loadingError}</h1>
+          <h1 className="font-display font-extrabold text-4xl text-screen mb-6">{t.errors.loadingError}</h1>
           <button 
             onClick={() => router.back()}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-rouge text-ink font-semibold px-6 py-2.5 hover:bg-screen transition-colors"
           >
             {t.actions.goBack}
           </button>
@@ -214,180 +215,140 @@ export default function MediaDetailsPage() {
     ? videos.find((v) => v.type === "Trailer" && v.site === "YouTube") || videos[0]
     : null;
 
+  const backButton = (
+    <button
+      onClick={() => router.back()}
+      className="inline-flex items-center gap-2 bg-ink/80 hover:bg-screen hover:text-ink text-screen border border-rule-strong px-3 sm:px-4 py-2 text-sm font-semibold transition-colors"
+      aria-label={t.actions.goBack}
+    >
+      <FaArrowLeft className="text-xs" aria-hidden="true" />
+      <span className="hidden sm:inline">{t.actions.goBack}</span>
+    </button>
+  );
+
+  const trailerButton = trailerVideo && (
+    <button
+      onClick={() => setShowTrailer(true)}
+      className="inline-flex items-center gap-2.5 bg-rouge text-ink hover:bg-screen px-4 sm:px-5 py-2.5 font-semibold text-sm sm:text-base transition-colors"
+      aria-label={t.details.watchTrailer}
+    >
+      <FaPlay className="text-xs" aria-hidden="true" />
+      <span>{t.details.watchTrailer}</span>
+    </button>
+  );
+
+  // Fiche technique (lignes du programme)
+  const factRow = "grid grid-cols-[6.5rem_1fr] sm:grid-cols-[9rem_1fr] gap-3 py-2.5 border-b border-rule";
+  const factLabel = "text-sm text-faint";
+  const factValue = "text-sm sm:text-base text-screen";
+
+  const sectionTitle = "font-display font-extrabold text-4xl sm:text-5xl leading-none text-screen";
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col bg-ink">
       <NavBar />
-      <div className="relative pt-[76px] pb-8 h-full bg-gray-900 text-white">
+      <div className="relative pt-16 sm:pt-[76px] pb-16 flex-1 bg-ink text-screen">
         {/* Image de fond */}
-        {backdrop && (
-          <div className="relative h-[30vh] sm:h-[40vh] overflow-hidden">
+        {backdrop ? (
+          <div className="relative h-[34vh] sm:h-[46vh] max-h-[560px] overflow-hidden">
             <img
               src={backdrop}
               alt=""
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-[center_30%]"
               fetchPriority="high"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent" />
-            
-            {/* Bouton retour positionné sur l'image */}
-            <div className="absolute top-4 left-4 z-20">
-              <button
-                onClick={() => router.back()}
-                className="flex items-center gap-2 bg-black/50 hover:bg-black/70 px-3 sm:px-4 py-2 rounded-lg transition-colors backdrop-blur-sm text-sm sm:text-base"
-              >
-                <FaArrowLeft className="text-sm" />
-                <span className="hidden sm:inline">{t.actions.goBack}</span>
-              </button>
+            <div className="absolute inset-0 bg-ink/45" />
+            <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink to-transparent" />
+            <div className="absolute top-4 inset-x-0 z-20">
+              <div className="max-w-[1240px] mx-auto px-4 sm:px-8">{backButton}</div>
             </div>
           </div>
-        )}
-
-        {/* Si pas d'image de fond, bouton en haut de page */}
-        {!backdrop && (
-          <div className="px-4 sm:px-6 pt-4">
-            <button
-              onClick={() => router.back()}
-              className="flex items-center gap-2 bg-black/50 hover:bg-black/70 px-3 sm:px-4 py-2 rounded-lg transition-colors backdrop-blur-sm text-sm sm:text-base"
-            >
-              <FaArrowLeft className="text-sm" />
-              <span className="hidden sm:inline">{t.actions.goBack}</span>
-            </button>
-          </div>
+        ) : (
+          <div className="max-w-[1240px] mx-auto px-4 sm:px-8 pt-6 pb-24">{backButton}</div>
         )}
 
         {/* Contenu principal */}
-        <div className="relative -mt-16 sm:-mt-20 z-10 px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            {/* Info film */}
-            <div className="flex flex-row gap-3 sm:gap-6 md:gap-8">
+        <div className="relative -mt-20 sm:-mt-28 z-10">
+          <div className="max-w-[1240px] mx-auto px-4 sm:px-8">
+            <div className="grid grid-cols-[7.5rem_1fr] sm:grid-cols-[13rem_1fr] lg:grid-cols-[18rem_1fr] gap-4 sm:gap-8 lg:gap-12 items-start">
               {/* Poster */}
-              <div className="flex-shrink-0">
+              <div>
                 <img
                   src={
                     media.poster_path
                       ? `https://image.tmdb.org/t/p/w500${media.poster_path}`
                       : 'https://placehold.co/300x450@2x.png'
                   }
-                  alt=""
-                  className="w-36 sm:w-44 md:w-52 lg:w-64 h-auto rounded-lg shadow-2xl"
+                  alt={`Affiche : ${title}`}
+                  className="w-full h-auto aspect-[2/3] object-cover bg-ink-3 outline outline-1 -outline-offset-1 outline-white/15"
                   fetchPriority="high"
                 />
               </div>
+
               {/* Informations */}
-              <div className="flex-1 space-y-2 xs:space-y-3 sm:space-y-4 md:space-y-6 min-w-0">
-                <div>
-                  <h1 className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1 sm:mb-2 leading-tight">{title}</h1>
-                  {media.tagline && (
-                    <p className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 italic leading-snug">{media.tagline}</p>
-                  )}
-                </div>
-
-                {/* Note et informations rapides */}
-                <div className="flex flex-wrap items-center gap-2 xs:gap-3 sm:gap-4 md:gap-6 text-xs xs:text-sm sm:text-base md:text-lg">
-                  <div className="flex items-center gap-1 xs:gap-2">
-                    <FaStar className="text-yellow-500 text-xs xs:text-sm" />
-                    <span className="font-semibold">{formatNote(media.vote_average)}</span>
-                    <span className="text-gray-400 hidden sm:inline text-xs sm:text-sm">({media.vote_count} {t.details.votes})</span>
-                  </div>
-
-                  <div className="flex items-center gap-1 xs:gap-2">
-                    <FaCalendarAlt className="text-blue-400 text-xs xs:text-sm" />
-                    <span className="text-xs xs:text-sm sm:text-base">{formatDate(releaseDate)}</span>
-                  </div>
-
-                  {isMovie && media.runtime && (
-                    <div className="flex items-center gap-1 xs:gap-2">
-                      <FaClock className="text-green-400 text-xs xs:text-sm" />
-                      <span className="text-xs xs:text-sm sm:text-base">{formatRuntime(media.runtime)}</span>
-                    </div>
-                  )}
-
-                  {!isMovie && media.number_of_seasons && (
-                    <div className="flex items-center gap-1 xs:gap-2">
-                      <span className="text-purple-400 font-semibold text-xs xs:text-sm sm:text-base">
-                        {media.number_of_seasons} {t.details.seasons}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Genres et Pays */}
-                <div className="flex flex-wrap gap-1 xs:gap-2">
-                  {/* Genres */}
-                  {media.genres && media.genres.length > 0 && (
-                    <>
-                      {media.genres.map((genre) => (
-                        <span
-                          key={genre.id}
-                          className="bg-gray-700 px-2 xs:px-3 py-1 rounded-full text-xs xs:text-sm"
-                        >
-                          {genre.name}
-                        </span>
-                      ))}
-                    </>
-                  )}
-                  
-                  {/* Pays de production */}
-                  {media.production_countries && media.production_countries.length > 0 && (
-                    <>
-                      {media.production_countries.map((country) => (
-                        <span
-                          key={country.iso_3166_1}
-                          className="bg-blue-900/50 px-2 xs:px-3 py-1 rounded-full text-xs xs:text-sm"
-                        >
-                          {country.name}
-                        </span>
-                      ))}
-                    </>
-                  )}
-                </div>
-
-                {/* Bouton Trailer mobile */}
-              {trailerVideo && (
-                <div className="flex sm:hidden items-start pt-2">
-                  <button
-                    onClick={() => setShowTrailer(true)}
-                    className="inline-flex items-center gap-1 bg-white text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md text-xs"
-                    aria-label={t.details.watchTrailer}
-                  >
-                    <FaPlay className="text-xs" />
-                    <span>{t.details.watchTrailer}</span>
-                  </button>
-                </div>
-              )}
-
-                {/* Synopsis */}
-                {media.overview && (
-                  <div className="hidden sm:block">
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3">{t.details.synopsis}</h2>
-                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base md:text-lg text-justify line-clamp-4 md:line-clamp-none">{media.overview}</p>
-                  </div>
+              <div className="min-w-0 pt-14 sm:pt-20 lg:pt-24">
+                <h1 className="font-display font-extrabold text-[2.1rem] sm:text-5xl lg:text-7xl leading-[0.9] text-screen break-words">{title}</h1>
+                {media.tagline && (
+                  <p className="mt-3 font-serif italic text-lg sm:text-2xl text-dim leading-snug">{media.tagline}</p>
                 )}
+
+                {/* Note */}
+                <div className="mt-4 sm:mt-6 flex items-baseline gap-2 tabular">
+                  <span className="font-display font-extrabold text-4xl sm:text-5xl leading-none text-rouge">{formatNote(media.vote_average)}</span>
+                  <span className="text-sm text-faint">/10</span>
+                  <span className="text-sm text-faint hidden sm:inline">· {media.vote_count} {t.details.votes}</span>
+                </div>
 
                 {/* Bouton Trailer desktop */}
                 {trailerVideo && (
-                  <div className="hidden sm:block">
-                    <button
-                      onClick={() => setShowTrailer(true)}
-                      className="inline-flex items-center gap-2 bg-white text-gray-900 hover:bg-gray-100 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md text-sm sm:text-base"
-                      aria-label={t.details.watchTrailer}
-                    >
-                      <FaPlay className="text-xs sm:text-sm" />
-                      <span>{t.details.watchTrailer}</span>
-                    </button>
-                  </div>
+                  <div className="hidden sm:block mt-6">{trailerButton}</div>
                 )}
               </div>
             </div>
 
-            {/* Sections mobiles/tablettes (synopsis, trailer, pays) */}
-            <div className="mt-6 space-y-4 sm:space-y-6">
-              {/* Synopsis mobile */}
-              {media.overview && (
-                <div className="block sm:hidden">
-                  <h2 className="text-lg font-bold mb-2">{t.details.synopsis}</h2>
-                  <p className="text-gray-300 leading-relaxed text-sm text-justify">{media.overview}</p>
+            {/* Bouton Trailer mobile */}
+            {trailerVideo && (
+              <div className="sm:hidden mt-5">{trailerButton}</div>
+            )}
+
+            {/* Fiche + synopsis */}
+            <div className="mt-10 sm:mt-14 grid gap-10 lg:grid-cols-[18rem_1fr] lg:gap-12">
+              <dl className="border-t border-rule-strong">
+                <div className={factRow}>
+                  <dt className={factLabel}>{isMovie ? t.meta.releaseDate : t.meta.firstAirDate}</dt>
+                  <dd className={`${factValue} tabular`}>
+                    {formatDate(releaseDate)}
+                    {isMovie && media.runtime ? (
+                      <span className="block text-dim"><FaClock className="inline -mt-0.5 mr-1.5 text-faint text-xs" aria-hidden="true" />{formatRuntime(media.runtime)}</span>
+                    ) : null}
+                    {!isMovie && media.number_of_seasons ? (
+                      <span className="block text-dim"><FaCalendarAlt className="inline -mt-0.5 mr-1.5 text-faint text-xs" aria-hidden="true" />{media.number_of_seasons} {t.details.seasons}</span>
+                    ) : null}
+                  </dd>
                 </div>
+                <div className={`${factRow} sm:hidden`}>
+                  <dt className={factLabel}>{t.meta.rating}</dt>
+                  <dd className={`${factValue} tabular`}>{media.vote_count} {t.details.votes}</dd>
+                </div>
+                {media.genres && media.genres.length > 0 && (
+                  <div className={factRow}>
+                    <dt className={factLabel}>Genres</dt>
+                    <dd className={factValue}>{media.genres.map((g) => g.name).join(" / ")}</dd>
+                  </div>
+                )}
+                {media.production_countries && media.production_countries.length > 0 && (
+                  <div className={factRow}>
+                    <dt className={factLabel}>{t.details.countries}</dt>
+                    <dd className={factValue}>{media.production_countries.map((c) => c.name).join(", ")}</dd>
+                  </div>
+                )}
+              </dl>
+
+              {media.overview && (
+                <section>
+                  <h2 className={`${sectionTitle} mb-4`}>{t.details.synopsis}</h2>
+                  <p className="text-dim text-base sm:text-lg leading-relaxed max-w-[68ch]">{media.overview}</p>
+                </section>
               )}
             </div>
 
@@ -399,137 +360,118 @@ export default function MediaDetailsPage() {
               const CastCard = ({ person, sublabel, className = "" }) => (
                 <Link
                   href={`/person/${person.id}`}
-                  className={`group rounded-xl overflow-hidden bg-gray-800 shadow-lg hover:shadow-xl hover:ring-2 hover:ring-blue-500/60 transition-all duration-300 hover:-translate-y-1 h-full flex flex-col ${className}`}
+                  className={`group flex flex-col ${className}`}
                 >
-                  <div className="aspect-[3/4] overflow-hidden flex-shrink-0 relative">
+                  <div className="aspect-[3/4] overflow-hidden bg-ink-3 outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color]">
                     <img
                       src={
                         person.profile_path
                           ? `https://image.tmdb.org/t/p/w185${person.profile_path}`
                           : "https://placehold.co/185x278@2x.png"
                       }
-                      alt=""
+                      alt={person.name}
                       loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover grayscale-[35%] group-hover:grayscale-0 transition-[filter]"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-80 pointer-events-none" />
                   </div>
-                  <div className="p-3 sm:p-3.5 bg-gradient-to-t from-gray-900 to-gray-800 flex-1 flex flex-col justify-end relative -mt-12 pt-10">
-                    <h3 className="font-bold text-white text-sm mb-0.5 line-clamp-2">
-                      {person.name}
-                    </h3>
-                    {sublabel && (
-                      <p className="text-xs text-gray-400 line-clamp-2">{sublabel}</p>
-                    )}
-                  </div>
+                  <h3 className="mt-2 font-semibold text-screen text-sm leading-snug line-clamp-2 group-hover:underline underline-offset-2 decoration-rouge">
+                    {person.name}
+                  </h3>
+                  {sublabel && (
+                    <p className="text-xs text-faint line-clamp-2 mt-0.5">{sublabel}</p>
+                  )}
                 </Link>
               );
 
               return (
-                <div className="mt-16 sm:mt-20">
-                  <div className="rounded-2xl border border-gray-700/60 bg-gray-800/30 backdrop-blur-sm p-6 sm:p-8">
-                    {/* Réalisateurs */}
-                    {directorsUnique.length > 0 && (
-                      <div className="mb-10">
-                        <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
-                          <span className="w-1 h-6 bg-blue-500 rounded-full" />
-                          {t.details.directors}
-                        </h3>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                          {directorsUnique.slice(0, 8).map((d) => (
-                            <CastCard key={d.id} person={d} sublabel={d.job} />
-                          ))}
-                        </div>
+                <section className="mt-16 sm:mt-20 pt-8 border-t border-rule-strong">
+                  {/* Réalisateurs */}
+                  {directorsUnique.length > 0 && (
+                    <div className="mb-12">
+                      <h2 className={`${sectionTitle} mb-6`}>{t.details.directors}</h2>
+                      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6">
+                        {directorsUnique.slice(0, 8).map((d) => (
+                          <CastCard key={d.id} person={d} sublabel={d.job} />
+                        ))}
                       </div>
-                    )}
+                    </div>
+                  )}
 
-                    {/* Distribution (casting) */}
-                    {cast.length > 0 && (
-                      <div>
-                        <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
-                          <span className="w-1 h-6 bg-blue-500 rounded-full" />
-                          {t.details.cast}
-                        </h3>
-                        <div className="hidden sm:grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                          {cast.slice(0, 18).map((actor) => (
-                            <CastCard key={actor.id} person={actor} sublabel={actor.character} />
-                          ))}
-                        </div>
-
-                        {/* Mobile: accordéon distribution */}
-                        <div className="sm:hidden">
-                          <details className="group/details">
-                            <summary className="list-none cursor-pointer">
-                              <div className="rounded-xl p-4 border border-gray-600/50 bg-gray-800/50 hover:bg-gray-700/50 transition-colors flex items-center justify-between">
-                                <span className="text-white font-medium">{t.details.viewCast}</span>
-                                <svg
-                                  className="w-5 h-5 text-gray-400 transition-transform duration-200 group-open/details:rotate-180"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </svg>
-                              </div>
-                            </summary>
-                            <div className="mt-4 grid grid-cols-3 gap-3">
-                              {cast.slice(0, 12).map((actor) => (
-                                <CastCard key={actor.id} person={actor} sublabel={actor.character} className="shadow-md" />
-                              ))}
-                            </div>
-                          </details>
-                        </div>
+                  {/* Distribution (casting) */}
+                  {cast.length > 0 && (
+                    <div>
+                      <h2 className={`${sectionTitle} mb-6`}>{t.details.cast}</h2>
+                      <div className="hidden sm:grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-9 gap-x-4 gap-y-6">
+                        {cast.slice(0, 18).map((actor) => (
+                          <CastCard key={actor.id} person={actor} sublabel={actor.character} />
+                        ))}
                       </div>
-                    )}
-                  </div>
-                </div>
+
+                      {/* Mobile: accordéon distribution */}
+                      <div className="sm:hidden">
+                        <details className="group/details">
+                          <summary className="list-none cursor-pointer flex items-center justify-between border-y border-rule py-3 text-screen font-semibold">
+                            <span>{t.details.viewCast}</span>
+                            <svg
+                              className="w-4 h-4 text-faint transition-transform duration-200 group-open/details:rotate-180"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </summary>
+                          <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-5">
+                            {cast.slice(0, 12).map((actor) => (
+                              <CastCard key={actor.id} person={actor} sublabel={actor.character} />
+                            ))}
+                          </div>
+                        </details>
+                      </div>
+                    </div>
+                  )}
+                </section>
               );
             })()}
 
             {/* Section Avis */}
             {allReviews && allReviews.length > 0 && (
-              <div className="mt-16">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
-                  <h2 className="text-3xl font-bold text-white">
-                    {t.details.reviews}
-                  </h2>
-                  
-                  {/* Filtres et statistiques */}
-                  <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                    <div className="text-sm text-gray-400">
+              <section className="mt-16 sm:mt-20 pt-8 border-t border-rule-strong">
+                <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-6 gap-4">
+                  <div>
+                    <h2 className={sectionTitle}>{t.details.reviews}</h2>
+                    <p className="mt-2 text-sm text-faint tabular">
                       {t.reviewsSystem.stats.showing} {Math.min(reviewsToShow, filteredReviews.length)} {t.reviewsSystem.stats.of} {filteredReviews.length} ({allReviews.length} {t.reviewsSystem.stats.total})
-                    </div>
+                    </p>
                   </div>
-                </div>
 
-                {/* Contrôles de filtrage */}
-                <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 mb-6 border border-gray-700/50">
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    {/* Filtre par type */}
+                  {/* Contrôles de filtrage */}
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:min-w-[30rem]">
                     <div className="flex-1">
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <label htmlFor="review-filter" className="block text-xs font-semibold text-faint mb-1.5">
                         {t.reviewsSystem.filterBy}
                       </label>
                       <select
+                        id="review-filter"
                         value={reviewFilter}
                         onChange={(e) => setReviewFilter(e.target.value)}
-                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full bg-ink border border-rule-strong px-3 py-2 text-sm text-screen hover:border-dim focus:border-screen"
                       >
                         <option value="all">{t.reviewsSystem.filters.all}</option>
                         <option value="positive">{t.reviewsSystem.filters.positive}</option>
                         <option value="negative">{t.reviewsSystem.filters.negative}</option>
                       </select>
                     </div>
-
-                    {/* Tri */}
                     <div className="flex-1">
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                      <label htmlFor="review-sort" className="block text-xs font-semibold text-faint mb-1.5">
                         {t.reviewsSystem.sortBy}
                       </label>
                       <select
+                        id="review-sort"
                         value={reviewSort}
                         onChange={(e) => setReviewSort(e.target.value)}
-                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full bg-ink border border-rule-strong px-3 py-2 text-sm text-screen hover:border-dim focus:border-screen"
                       >
                         <option value="newest">{t.reviewsSystem.sorts.newest}</option>
                         <option value="oldest">{t.reviewsSystem.sorts.oldest}</option>
@@ -540,45 +482,39 @@ export default function MediaDetailsPage() {
                   </div>
                 </div>
                 
-                <div className="space-y-6">
+                <div className="border-t border-rule">
                   {filteredReviews.slice(0, reviewsToShow).map((review) => (
-                    <div key={review.id} className="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0">
-                            {review.author_details?.avatar_path && !review.author_details.avatar_path.includes('gravatar') ? (
-                              <img
-                                src={`https://image.tmdb.org/t/p/w45${review.author_details.avatar_path}`}
-                                alt={review.author}
-                                className="w-12 h-12 rounded-full object-cover"
-                              />
-                            ) : (
-                              <FaUser className="text-white text-lg" />
-                            )}
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-white">{review.author}</h3>
-                            <div className="flex items-center gap-2">
-                              {review.author_details?.rating && (
-                                <div className="flex items-center gap-1">
-                                  {renderStars(review.author_details.rating)}
-                                  <span className="text-sm text-gray-400 ml-1">
-                                    ({review.author_details.rating}/10)
-                                  </span>
-                                </div>
-                              )}
+                    <article key={review.id} className="grid sm:grid-cols-[14rem_1fr] gap-3 sm:gap-8 py-6 border-b border-rule">
+                      <header className="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-2">
+                        <div className="w-10 h-10 bg-ink-3 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          {review.author_details?.avatar_path && !review.author_details.avatar_path.includes('gravatar') ? (
+                            <img
+                              src={`https://image.tmdb.org/t/p/w45${review.author_details.avatar_path}`}
+                              alt={review.author}
+                              className="w-10 h-10 object-cover"
+                            />
+                          ) : (
+                            <FaUser className="text-faint" aria-hidden="true" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="font-semibold text-screen truncate">{review.author}</h3>
+                          <p className="text-xs text-faint tabular">{formatDate(review.created_at)}</p>
+                          {review.author_details?.rating && (
+                            <div className="flex items-center gap-1 mt-1">
+                              {renderStars(review.author_details.rating)}
+                              <span className="text-xs text-dim ml-1 tabular">
+                                ({review.author_details.rating}/10)
+                              </span>
                             </div>
-                          </div>
+                          )}
                         </div>
-                        <div className="text-sm text-gray-400">
-                          {formatDate(review.created_at)}
-                        </div>
-                      </div>
+                      </header>
                       
-                      <div className="text-gray-300">
+                      <div className="text-dim max-w-[70ch]">
                         {review.content.length > 300 ? (
                           <div>
-                            <p className="leading-relaxed">
+                            <p className="leading-relaxed whitespace-pre-line">
                               {expandedReviews.has(review.id) 
                                 ? review.content 
                                 : `${review.content.substring(0, 300)}...`
@@ -586,16 +522,16 @@ export default function MediaDetailsPage() {
                             </p>
                             <button
                               onClick={() => toggleReviewExpansion(review.id)}
-                              className="text-blue-400 hover:text-blue-300 text-sm mt-2 font-medium transition-colors"
+                              className="text-screen underline underline-offset-2 decoration-rouge hover:text-rouge text-sm mt-2 font-semibold transition-colors"
                             >
                               {expandedReviews.has(review.id) ? t.details.readLess : t.details.readMore}
                             </button>
                           </div>
                         ) : (
-                          <p className="leading-relaxed">{review.content}</p>
+                          <p className="leading-relaxed whitespace-pre-line">{review.content}</p>
                         )}
                       </div>
-                    </div>
+                    </article>
                   ))}
                 </div>
 
@@ -604,7 +540,7 @@ export default function MediaDetailsPage() {
                   <div className="text-center mt-8">
                     <button
                       onClick={() => setReviewsToShow(prev => prev + 5)}
-                      className="bg-white hover:bg-white/90 text-black px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                      className="border border-rule-strong text-screen hover:bg-screen hover:text-ink hover:border-screen px-6 py-3 font-semibold text-sm transition-colors"
                     >
                       {t.reviewsSystem.showMore}
                     </button>
@@ -615,7 +551,7 @@ export default function MediaDetailsPage() {
                   <div className="text-center mt-4">
                     <button
                       onClick={() => setReviewsToShow(5)}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
+                      className="text-dim hover:text-screen text-sm transition-colors"
                     >
                       {t.reviewsSystem.showLess}
                     </button>
@@ -623,22 +559,18 @@ export default function MediaDetailsPage() {
                 )}
 
                 {filteredReviews.length === 0 && allReviews.length > 0 && (
-                  <div className="text-center py-8">
-                    <p className="text-gray-400">{t.reviewsSystem.noReviewsWithFilters}</p>
+                  <div className="py-8">
+                    <p className="text-dim">{t.reviewsSystem.noReviewsWithFilters}</p>
                   </div>
                 )}
-              </div>
+              </section>
             )}
 
             {allReviews && allReviews.length === 0 && (
-              <div className="mt-16">
-                <h2 className="text-3xl font-bold text-white mb-8">
-                  {t.details.reviews}
-                </h2>
-                <div className="text-center py-8">
-                  <p className="text-gray-400">{t.details.noReviews}</p>
-                </div>
-              </div>
+              <section className="mt-16 sm:mt-20 pt-8 border-t border-rule-strong">
+                <h2 className={`${sectionTitle} mb-4`}>{t.details.reviews}</h2>
+                <p className="text-dim font-serif italic text-lg">{t.details.noReviews}</p>
+              </section>
             )}
           </div>
         </div>
@@ -646,22 +578,22 @@ export default function MediaDetailsPage() {
         {/* Modal Trailer */}
         {showTrailer && trailerVideo && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-[90] flex items-center justify-center bg-black/90 p-4"
             role="dialog"
             aria-modal="true"
             aria-label={t.details.watchTrailer}
             onClick={(e) => e.target === e.currentTarget && setShowTrailer(false)}
           >
-            <div className="relative w-full max-w-4xl">
+            <div className="relative w-full max-w-5xl">
               <button
                 type="button"
                 onClick={() => setShowTrailer(false)}
-                className="absolute -top-10 right-0 z-10 p-2 text-white hover:text-gray-300 transition-colors rounded-full hover:bg-white/10"
+                className="absolute -top-12 right-0 z-10 flex items-center justify-center w-10 h-10 text-screen hover:text-rouge transition-colors"
                 aria-label={t.actions.goBack}
               >
-                <FaTimes className="text-2xl" />
+                <FaTimes className="text-2xl" aria-hidden="true" />
               </button>
-              <div className="relative w-full rounded-lg overflow-hidden shadow-2xl" style={{ paddingBottom: "56.25%" }}>
+              <div className="relative w-full overflow-hidden border border-rule" style={{ paddingBottom: "56.25%" }}>
                 <iframe
                   src={`https://www.youtube.com/embed/${trailerVideo.key}?autoplay=1`}
                   title={t.details.watchTrailer}

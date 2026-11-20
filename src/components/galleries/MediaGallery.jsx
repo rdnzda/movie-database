@@ -39,21 +39,21 @@ export default function MediaGallery({
 
   if (pageLoading) {
     return (
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-10 w-full">
         <SkeletonGrid />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-start gap-6 pb-10 w-full max-w-6xl mx-auto">
+    <div className="flex flex-col items-start gap-6 pb-14 w-full">
       {/* Titre */}
       {title && (
-        <h2 className="drop-shadow-md font-bold text-xl sm:text-2xl">{title}</h2>
+        <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-none">{title}</h2>
       )}
 
       {/* Grille de cartes responsive */}
-      <div className="movie-gallery grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-4 md:gap-6 lg:gap-6 xl:gap-8 items-between justify-between animate-[fadeIn_0.6s_ease] w-full">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 sm:gap-x-5 gap-y-7 animate-[fadeIn_0.4s_ease] w-full">
         {uniqueItems.map((item, index) => (
           <MediaCard
             media={item}
@@ -66,7 +66,7 @@ export default function MediaGallery({
       {/* Bouton "Charger plus" */}
       {canLoadMore && (
         <button
-          className="px-6 sm:px-7 py-2 cursor-pointer rounded bg-gray-900 hover:bg-gray-800 mx-auto flex items-center gap-2 disabled:opacity-60 disabled:cursor-wait transition-all duration-200 text-sm sm:text-base"
+          className="px-7 py-3 cursor-pointer border border-rule-strong text-screen font-semibold hover:bg-screen hover:text-ink hover:border-screen mx-auto flex items-center gap-2 disabled:opacity-60 disabled:cursor-wait transition-colors duration-150 text-sm"
           onClick={onLoadMore}
           disabled={loadingMore}
           aria-label={loadingMore ? t.loading.more : t.actions.loadMore}
@@ -78,7 +78,7 @@ export default function MediaGallery({
 
       {/* Message d'erreur */}
       {error && (
-        <div className="text-red-500 bg-red-100 dark:bg-red-900/20 p-4 rounded-lg m-auto">
+        <div className="text-rouge border border-rouge/50 px-4 py-3 m-auto text-sm">
           {error}
         </div>
       )}

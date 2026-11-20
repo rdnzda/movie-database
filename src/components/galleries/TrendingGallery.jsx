@@ -15,23 +15,18 @@ export default function TrendingGallery() {
   const { t } = useLanguage();
 
   return (
-    <div className="w-full px-4 sm:px-0  m-auto pt-8 flex flex-col gap-8 bg-white text-black">
-      {/* En-tête avec titre et toggle */}
-      <div className="w-full sm:max-w-[1160px] m-auto px-4 sm:px-8 flex flex-col sm:flex-row gap-4 sm:gap-5 items-start sm:items-center">
-        <h3 className="font-semibold text-xl sm:text-2xl tracking-tight">
+    <section className="w-full pt-10 sm:pt-12 pb-6 flex flex-col gap-8 bg-ink text-screen">
+      <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8 flex flex-wrap gap-x-6 gap-y-3 items-end justify-between">
+        <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-none">
           {t.home.trending}
-        </h3>
+        </h2>
         <ToggleButton selected={timeWindow} onSelect={setTimeWindow} />
       </div>
 
-      {/* Galeries de contenu */}
-      <div className="flex flex-col gap-8">
-        {/* Section Films */}
+      <div className="flex flex-col gap-10">
         <TrendingMoviesGallery timeWindow={timeWindow} />
-        
-        {/* Section Séries */}
         <TrendingSeriesGallery timeWindow={timeWindow} />
       </div>
-    </div>
+    </section>
   );
 }

@@ -9,34 +9,23 @@ export default function MediaDiscover() {
     const [showingSuggestions, setShowingSuggestions] = useState(false);
 
     const handleSuggestionsChange = (isShowing) => {
-        console.log("MediaDiscover: suggestions changed to", isShowing);
         setShowingSuggestions(isShowing);
     };
 
     return (
-        <section className={`
-            relative w-full
-            transition-all duration-500 ease-in-out
-            min-h-fit
-        `}>
-            {/* Gradient de fond */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-700" />
-            {/* Overlay pour améliorer le contraste si besoin */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.10),transparent_60%)]" />
-            <div className="absolute inset-0 bg-blue-900/10 mix-blend-overlay pointer-events-none" />
-
-            <div className="relative mx-auto w-full flex flex-col pt-14 sm:pt-16 md:pt-20 gap-4 sm:gap-6 md:gap-8 max-w-6xl px-8 sm:px-8 xl:px-8 ">
-                <header className="space-y-3 text-left">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
+        <section className="relative w-full border-b border-rule">
+            <div className="relative mx-auto w-full max-w-[1240px] px-4 sm:px-8 pt-10 sm:pt-14 lg:pt-16 grid gap-6 lg:gap-12 lg:grid-cols-[1.15fr_1fr] lg:items-end">
+                <header className="lg:pb-12">
+                    <h1 className="font-display font-extrabold text-[3.75rem] sm:text-[5.5rem] lg:text-[7rem] leading-[0.85] text-screen">
                         {t.home.welcome}
                     </h1>
-                        <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-white/95 drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]">
+                    <h2 className="mt-4 max-w-xl font-serif italic text-xl sm:text-2xl lg:text-[1.7rem] leading-snug text-dim">
                         {t.home.subtitle}
                     </h2>
                 </header>
                 <div className={`
-                    transition-all duration-500 ease-in-out
-                    ${showingSuggestions ? 'pb-[455px]' : 'pb-10'}
+                    transition-[padding] duration-300 ease-out
+                    ${showingSuggestions ? 'pb-[455px]' : 'pb-10 sm:pb-12'}
                 `}>
                     <HomeSearchBar variant="light" onSuggestionsChange={handleSuggestionsChange} />
                 </div>

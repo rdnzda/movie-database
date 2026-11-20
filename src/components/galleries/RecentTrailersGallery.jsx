@@ -5,6 +5,7 @@ import { getRecentMovieTrailers, getRecentSeriesTrailers, getMovieVideos, getSer
 import { tmdbRequest } from '../../services/api/base';
 import { useLanguage } from '../../contexts/LanguageContext';
 import SimpleBar from 'simplebar-react';
+import { Play, X } from 'lucide-react';
 
 // Carte trailer avec miniature YouTube + ouverture modal interne
 function TrailerCard({ item, onOpen }) {
@@ -13,14 +14,14 @@ function TrailerCard({ item, onOpen }) {
     <button
       type="button"
       onClick={() => onOpen(item)}
-      className="flex flex-col gap-2 w-[340px] md:w-[380px] flex-none group text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      className="flex flex-col gap-2.5 w-[280px] sm:w-[340px] md:w-[380px] flex-none group text-left"
     >
-      <div className="relative rounded-xl overflow-hidden w-full aspect-video bg-black shadow hover:shadow-lg transition-shadow">
+      <div className="relative overflow-hidden w-full aspect-video bg-black outline outline-1 -outline-offset-1 outline-white/10 group-hover:outline-screen transition-[outline-color]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={thumb}
           alt={item.title}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 group-active:scale-95"
+          className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
           loading="lazy"
           onError={(e) => {
             if (item.poster_path) {
@@ -28,14 +29,14 @@ function TrailerCard({ item, onOpen }) {
             }
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-        <span className="absolute bottom-2 left-2 inline-flex items-center gap-1 text-white text-xs font-semibold bg-black/50 px-2 py-1 rounded-md backdrop-blur-sm">
-          ▶ {item.video_type || 'Trailer'}
+        <span className="absolute bottom-0 left-0 inline-flex items-center gap-1.5 bg-ink text-screen text-xs font-semibold pl-2 pr-2.5 py-1.5 group-hover:bg-rouge group-hover:text-ink transition-colors">
+          <Play className="w-3 h-3 fill-current" aria-hidden="true" />
+          {item.video_type || 'Trailer'}
         </span>
       </div>
       <div className="flex flex-col">
-        <span className="text-sm font-semibold leading-snug line-clamp-2 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">{item.title}</span>
-        <span className="text-xs text-gray-300">{item.release_date || item.first_air_date}</span>
+        <span className="text-sm font-semibold leading-snug line-clamp-2 text-screen">{item.title}</span>
+        <span className="text-xs text-faint tabular">{item.release_date || item.first_air_date}</span>
       </div>
     </button>
   );
@@ -52,14 +53,14 @@ const FILTERS = [
 // Simple wrapper utilisant SimpleBar pour un scroll fluide sans boutons
 function SimpleBarCarousel({ trailers, onOpen }) {
   return (
-    <div className="w-full max-w-6xl m-auto px-4 sm:px-8">
+    <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8">
       <SimpleBar autoHide={false} className="w-full pb-4">
-        <div className="flex gap-6 pr-6">
+        <div className="flex gap-5 pr-6">
           {trailers.map(tr => (
             <TrailerCard key={tr.kind + '-' + tr.id + '-' + tr.video_key} item={tr} onOpen={onOpen} />
           ))}
           {trailers.length === 0 && (
-            <div className="text-sm text-gray-400">Aucun trailer récent trouvé.</div>
+            <div className="text-sm text-dim">Aucun trailer récent trouvé.</div>
           )}
         </div>
       </SimpleBar>
@@ -209,34 +210,22 @@ export default function RecentTrailersGallery({ include = 'both' }) {
   }, [active]);
 
   return (
-    <section className="w-full m-auto flex flex-col px-4 gap-4 text-white pt-8 bg-gray-900">
-      <style jsx>{`
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
-      <div className="w-full max-w-6xl m-auto px-4 sm:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-          <h2 className="text-2xl font-semibold tracking-tight">
+    <section className="w-full flex flex-col gap-6 text-screen pt-10 sm:pt-12 pb-10 bg-ink-2 border-t border-rule">
+      <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8">
+        <div className="flex flex-col lg:flex-row lg:items-end gap-4 lg:gap-10">
+          <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-none">
             {t?.sections?.recentTrailers || 'Nouveaux Trailers'}
           </h2>
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-x-5 gap-y-1 flex-wrap -mb-1" role="group">
             {FILTERS.map(f => {
               const isActive = f.key === filter;
               const label = t?.trailersFilters?.[f.key] || f.key;
-              const colorMap = {
-                blue: 'bg-blue-600 border-blue-500',
-                emerald: 'bg-emerald-600 border-emerald-500',
-                violet: 'bg-violet-600 border-violet-500',
-                amber: 'bg-amber-500 border-amber-400',
-                rose: 'bg-rose-600 border-rose-500'
-              };
-              const activeClasses = colorMap[f.color] || 'bg-blue-600 border-blue-500';
               return (
                 <button
                   key={f.key}
                   onClick={() => setFilter(f.key)}
                   aria-pressed={isActive}
-                  className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-white/30 ${isActive ? activeClasses + ' text-white shadow-md' : 'border-white/20 text-gray-300 hover:border-white/40 hover:text-white'} hover:shadow`}
+                  className={`py-1 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${isActive ? 'border-rouge text-screen' : 'border-transparent text-dim hover:text-screen hover:border-rule-strong'}`}
                 >
                   {label}
                 </button>
@@ -246,32 +235,32 @@ export default function RecentTrailersGallery({ include = 'both' }) {
         </div>
       </div>
       {loading && (
-        <div className="w-full max-w-6xl m-auto px-4 sm:px-8 pb-4">
+        <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8 pb-4">
           <div className="relative overflow-hidden">
-            <div className="flex gap-6">
+            <div className="flex gap-5">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="flex-1 aspect-video bg-gray-200 rounded-xl animate-pulse" />
+                <div key={i} className="flex-1 min-w-[260px] aspect-video bg-ink-3 animate-pulse" />
               ))}
             </div>
           </div>
         </div>
       )}
-      {error && <div className="text-sm text-red-500">{error}</div>}
+      {error && <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-8 text-sm text-rouge">{error}</div>}
       {!loading && !error && (
         <SimpleBarCarousel trailers={trailers} onOpen={setActive} />
       )}
       {active && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fadeIn"
+            className="absolute inset-0 bg-black/85"
             onClick={() => setActive(null)}
           />
-          <div className="relative w-full max-w-6xl aspect-video bg-black rounded-lg shadow-lg overflow-hidden animate-scaleIn">
+          <div className="relative w-full max-w-6xl aspect-video bg-black border border-rule" role="dialog" aria-modal="true" aria-label={active.title}>
             <button
               onClick={() => setActive(null)}
-              className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 text-white text-xs px-2 py-1 rounded"
+              className="absolute -top-11 right-0 flex items-center justify-center w-10 h-10 text-screen hover:text-rouge"
               aria-label="Fermer"
-            >✕</button>
+            ><X className="w-6 h-6" aria-hidden="true" /></button>
             <iframe
               ref={iframeRef}
               className="w-full h-full"
